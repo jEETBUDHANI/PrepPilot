@@ -1,0 +1,214 @@
+import { useState } from "react";
+import {
+  ArrowLeft,
+  Bell,
+  Check,
+  Lock,
+  Mail,
+  Moon,
+  Save,
+  Shield,
+  User,
+  Trash2,
+  Eye,
+  EyeOff,
+  CheckCircle2,
+  Sparkles,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import Button from "../components/common/Button";
+import Card from "../components/common/Card";
+import Badge from "../components/common/Badge";
+import Input from "../components/common/Input";
+
+function Settings() {
+  const [name, setName] = useState("Alex Johnson");
+  const [email, setEmail] = useState("alex@example.com");
+  const [notifications, setNotifications] = useState(true);
+  const [weeklyReport, setWeeklyReport] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+  const [saved, setSaved] = useState(false);
+
+  function handleSave() {
+    setSaved(true);
+    setTimeout(() => {
+      setSaved(false);
+    }, 2000);
+  }
+
+  return (
+    <main className="min-h-screen bg-[#030712] text-slate-100 pb-20">
+      {/* HEADER */}
+      <header className="border-b border-white/[0.08] bg-[#030712]/80 backdrop-blur-xl">
+        <div className="mx-auto flex h-20 max-w-5xl items-center justify-between px-6">
+          <Link
+            to="/dashboard"
+            className="flex items-center gap-2 text-xs font-semibold text-slate-400 hover:text-white transition-colors"
+          >
+            <ArrowLeft className="h-4 w-4" />
+            Back to Workspace
+          </Link>
+
+          <div className="flex items-center gap-2.5">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 font-bold text-white shadow-md">
+              <Sparkles className="h-4 w-4" />
+            </div>
+            <span className="font-bold text-white text-sm">Account Preferences</span>
+          </div>
+
+          <Badge variant="neutral" size="sm">
+            Candidate Pro
+          </Badge>
+        </div>
+      </header>
+
+      {/* CONTENT */}
+      <div className="mx-auto max-w-4xl px-6 py-12 space-y-8">
+        {/* TITLE */}
+        <div>
+          <Badge variant="glow" size="md">User Settings</Badge>
+          <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
+            Account & System Preferences
+          </h1>
+          <p className="mt-2 text-sm text-slate-400">
+            Manage your personal profile, notification triggers, security controls, and visual theme.
+          </p>
+        </div>
+
+        {/* PROFILE SECTION */}
+        <Card variant="default" className="p-6">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600/15 text-violet-400 border border-violet-500/20">
+              <User className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="font-bold text-white text-base">Personal Profile</h2>
+              <p className="text-xs text-slate-400">Your workspace candidate identity</p>
+            </div>
+          </div>
+
+          <div className="mt-6 grid gap-4 md:grid-cols-2">
+            <Input
+              label="Full Name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              icon={User}
+            />
+            <Input
+              label="Email Address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              icon={Mail}
+            />
+          </div>
+        </Card>
+
+        {/* PASSWORD SECTION */}
+        <Card variant="default" className="p-6">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-600/15 text-cyan-400 border border-cyan-500/20">
+              <Lock className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="font-bold text-white text-base">Password & Authentication</h2>
+              <p className="text-xs text-slate-400">Manage account access security</p>
+            </div>
+          </div>
+
+          <div className="mt-6 max-w-md">
+            <Input
+              label="Current Password"
+              type={showPassword ? "text" : "password"}
+              defaultValue="password123"
+              icon={Lock}
+              endIcon={showPassword ? EyeOff : Eye}
+              onEndIconClick={() => setShowPassword(!showPassword)}
+            />
+          </div>
+        </Card>
+
+        {/* NOTIFICATIONS SECTION */}
+        <Card variant="default" className="p-6">
+          <div className="flex items-center gap-3 border-b border-white/10 pb-4">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-600/15 text-amber-400 border border-amber-500/20">
+              <Bell className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="font-bold text-white text-base">Notification Triggers</h2>
+              <p className="text-xs text-slate-400">Choose what updates you receive</p>
+            </div>
+          </div>
+
+          <div className="mt-6 divide-y divide-white/10">
+            <div className="flex items-center justify-between py-4">
+              <div>
+                <p className="text-sm font-semibold text-white">Interview Practice Reminders</p>
+                <p className="text-xs text-slate-400 mt-0.5">Receive daily notifications to maintain practice streak.</p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setNotifications(!notifications)}
+                className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
+                  notifications ? "bg-violet-600" : "bg-slate-800"
+                }`}
+              >
+                <span
+                  className={`absolute top-1 h-4 w-4 rounded-full bg-white transition-all ${
+                    notifications ? "left-6" : "left-1"
+                  }`}
+                />
+              </button>
+            </div>
+
+            <div className="flex items-center justify-between py-4">
+              <div>
+                <p className="text-sm font-semibold text-white">Weekly Performance Report</p>
+                <p className="text-xs text-slate-400 mt-0.5">Summary of readiness score progression & ATS scans.</p>
+              </div>
+
+              <button
+                type="button"
+                onClick={() => setWeeklyReport(!weeklyReport)}
+                className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
+                  weeklyReport ? "bg-violet-600" : "bg-slate-800"
+                }`}
+              >
+                <span
+                  className={`absolute top-1 h-4 w-4 rounded-full bg-white transition-all ${
+                    weeklyReport ? "left-6" : "left-1"
+                  }`}
+                />
+              </button>
+            </div>
+          </div>
+        </Card>
+
+        {/* SECURITY STATUS */}
+        <Card variant="default" className="p-6 border-emerald-500/20 bg-emerald-500/[0.02]">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/15 text-emerald-400 border border-emerald-500/20">
+              <Shield className="h-5 w-5" />
+            </div>
+            <div>
+              <h2 className="font-bold text-white text-base">Account Protection Active</h2>
+              <p className="text-xs text-emerald-400 font-semibold mt-0.5">SSL Encrypted • Private Workspace</p>
+            </div>
+          </div>
+        </Card>
+
+        {/* SAVE ACTION */}
+        <div className="flex justify-end pt-4">
+          <Button variant="glow" size="lg" onClick={handleSave}>
+            {saved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
+            {saved ? "Changes Saved!" : "Save Settings"}
+          </Button>
+        </div>
+      </div>
+    </main>
+  );
+}
+
+export default Settings;
