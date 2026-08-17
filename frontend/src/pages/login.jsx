@@ -5,6 +5,8 @@ import Button from "../components/common/Button";
 import Input from "../components/common/Input";
 import Card from "../components/common/Card";
 
+import { loginUser } from "../services/authService";
+
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -13,7 +15,7 @@ function Login() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!email || !password) {
       setError("Please enter both email and password.");
@@ -22,10 +24,17 @@ function Login() {
     setError("");
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const data = await loginUser({ email, password });
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
       navigate("/dashboard");
-    }, 600);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Invalid email or password");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (

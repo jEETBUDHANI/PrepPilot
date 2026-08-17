@@ -10,61 +10,48 @@ import {
   TrendingUp,
   Trophy,
   Zap,
-  Loader2,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import Button from "../components/common/Button";
 import Card from "../components/common/Card";
 import Badge from "../components/common/Badge";
-import { getInterviews } from "../services/interviewService";
+import { getPerformance } from "../services/interviewService";
 
 function Performance() {
-  const [interviews, setInterviews] = useState([]);
+  const [performance, setPerformance] = useState(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    async function loadInterviews() {
+    async function loadPerformance() {
       try {
         setLoading(true);
-        const data = await getInterviews();
-        setInterviews(data.interviews || []);
+        const data = await getPerformance();
+        setPerformance(data.performance);
       } catch (error) {
         console.error("Failed to load performance data:", error);
       } finally {
         setLoading(false);
       }
     }
-    loadInterviews();
+    loadPerformance();
   }, []);
 
-  const totalCount = interviews.length;
-  const avgScore = totalCount > 0
-    ? Math.round(interviews.reduce((sum, item) => sum + (item.overallScore || item.score || 0), 0) / totalCount)
-    : 84;
-  const bestScore = totalCount > 0
-    ? Math.max(...interviews.map((item) => item.overallScore || item.score || 0))
-    : 94;
+  const totalInterviews = performance?.totalInterviews ?? 0;
+  const avgScore = performance?.averageScore ?? 0;
+  const bestScore = performance?.bestScore ?? 0;
+  const totalPracticeTime = performance?.totalPracticeTime ?? 0;
+  const weeklyPerformance = performance?.weeklyPerformance ?? [];
 
   const skills = [
     { name: "Technical Depth & Concepts", score: Math.min(95, avgScore + 5), change: "+8%" },
-    { name: "Communication & STAR Method", score: Math.max(70, avgScore - 4), change: "+5%" },
+    { name: "Communication & STAR Method", score: Math.max(0, avgScore - 4), change: "+5%" },
     { name: "Problem Solving & Architecture", score: Math.min(98, avgScore + 2), change: "+12%" },
-    { name: "Executive Response Confidence", score: Math.max(75, avgScore - 2), change: "+7%" },
-  ];
-
-  const weeklyPerformance = [
-    { day: "Mon", score: 72 },
-    { day: "Tue", score: 78 },
-    { day: "Wed", score: 75 },
-    { day: "Thu", score: 84 },
-    { day: "Fri", score: 81 },
-    { day: "Sat", score: 89 },
-    { day: "Sun", score: avgScore },
+    { name: "Executive Response Confidence", score: Math.max(0, avgScore - 2), change: "+7%" },
   ];
 
   const achievements = [
-    { title: "Sessions Mastered", description: `Completed ${totalCount || 10} comprehensive AI mock sessions`, icon: Trophy },
-    { title: "Top Performer 90%+", description: "Scored above 90% in a technical interview", icon: Award },
+    { title: "Sessions Mastered", description: `Completed ${totalInterviews} comprehensive AI mock sessions`, icon: Trophy },
+    { title: "Top Performer 90%+", description: "Scored high technical competence in mock interviews", icon: Award },
     { title: "Consistent Practice Streak", description: "Practiced consistently across multiple mock runs", icon: Zap },
   ];
 
@@ -109,20 +96,36 @@ function Performance() {
 
           <Link to="/interview/setup">
             <Button variant="glow" size="md">
-              Practice Next Target Skill
+              Start Practice Session
             </Button>
           </Link>
         </div>
+
+        {/* EMPTY STATE */}
+        {!loading && totalInterviews === 0 && (
+          <div className="rounded-3xl border border-white/10 bg-slate-900/60 p-10 text-center backdrop-blur-xl">
+            <h2 className="text-xl font-semibold text-white">No interviews yet</h2>
+            <p className="mt-3 text-sm text-slate-400 max-w-md mx-auto leading-relaxed">
+              Complete your first AI interview to see your detailed performance metrics, progress charts, and readiness index.
+            </p>
+            <Link
+              to="/interview/setup"
+              className="mt-6 inline-flex rounded-xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white hover:bg-violet-500 transition-colors shadow-lg shadow-violet-600/30"
+            >
+              Start Interview Now
+            </Link>
+          </div>
+        )}
 
         {/* METRICS GRID */}
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           <Card variant="default" className="p-6">
             <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Overall Score</span>
+              <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Average Score</span>
               <TrendingUp className="h-4 w-4 text-emerald-400" />
             </div>
             <p className="mt-3 text-3xl font-extrabold text-white">{avgScore}%</p>
-            <p className="mt-1 text-xs text-emerald-400 font-medium">+9% vs last month</p>
+            <p className="mt-1 text-xs text-slate-400 font-medium">From MongoDB sessions</p>
           </Card>
 
           <Card variant="default" className="p-6">
@@ -130,8 +133,8 @@ function Performance() {
               <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Mock Sessions</span>
               <Brain className="h-4 w-4 text-violet-400" />
             </div>
-            <p className="mt-3 text-3xl font-extrabold text-white">{totalCount}</p>
-            <p className="mt-1 text-xs text-slate-400 font-medium">Recorded in MongoDB</p>
+            <p className="mt-3 text-3xl font-extrabold text-white">{totalInterviews}</p>
+            <p className="mt-1 text-xs text-slate-400 font-medium">Completed interviews</p>
           </Card>
 
           <Card variant="default" className="p-6">
@@ -139,8 +142,8 @@ function Performance() {
               <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Practice Time</span>
               <Clock className="h-4 w-4 text-cyan-400" />
             </div>
-            <p className="mt-3 text-3xl font-extrabold text-white">{(totalCount * 0.4).toFixed(1)}h</p>
-            <p className="mt-1 text-xs text-emerald-400 font-medium">+2.1h this week</p>
+            <p className="mt-3 text-3xl font-extrabold text-white">{totalPracticeTime} min</p>
+            <p className="mt-1 text-xs text-emerald-400 font-medium">Total minutes practiced</p>
           </Card>
 
           <Card variant="default" className="p-6">
@@ -159,29 +162,40 @@ function Performance() {
           <Card variant="default" className="lg:col-span-2 p-6 flex flex-col justify-between">
             <div className="flex items-center justify-between border-b border-white/10 pb-4">
               <div>
-                <h3 className="font-bold text-white text-base">Weekly Performance Progression</h3>
-                <p className="text-xs text-slate-400">Daily mock interview average scores</p>
+                <h3 className="font-bold text-white text-base">Recent Sessions Performance</h3>
+                <p className="text-xs text-slate-400">Scores of your recent AI interviews</p>
               </div>
               <div className="flex items-center gap-1 text-xs font-semibold text-emerald-400">
                 <ArrowUpRight className="h-4 w-4" />
-                <span>+12% Trend</span>
+                <span>Real-Time Data</span>
               </div>
             </div>
 
             {/* CSS BAR CHART */}
             <div className="mt-8 flex h-52 items-end justify-between gap-3 px-2">
-              {weeklyPerformance.map((item) => (
-                <div key={item.day} className="flex h-full flex-1 flex-col items-center justify-end gap-2">
-                  <span className="text-[10px] font-mono text-slate-400">{item.score}</span>
-                  <div className="flex h-40 w-full items-end rounded-t-lg bg-white/5 p-1">
-                    <div
-                      className="w-full rounded-t-md bg-gradient-to-t from-violet-600 to-cyan-400 transition-all hover:brightness-125"
-                      style={{ height: `${item.score}%` }}
-                    />
-                  </div>
-                  <span className="text-xs text-slate-500 font-semibold">{item.day}</span>
+              {weeklyPerformance.length > 0 ? (
+                weeklyPerformance.map((item, index) => {
+                  const dateStr = item.date
+                    ? new Date(item.date).toLocaleDateString("en-US", { weekday: "short" })
+                    : `S${index + 1}`;
+                  return (
+                    <div key={index} className="flex h-full flex-1 flex-col items-center justify-end gap-2">
+                      <span className="text-[10px] font-mono text-slate-400">{item.score}</span>
+                      <div className="flex h-40 w-full items-end rounded-t-lg bg-white/5 p-1">
+                        <div
+                          className="w-full rounded-t-md bg-gradient-to-t from-violet-600 to-cyan-400 transition-all hover:brightness-125"
+                          style={{ height: `${item.score}%` }}
+                        />
+                      </div>
+                      <span className="text-xs text-slate-500 font-semibold">{dateStr}</span>
+                    </div>
+                  );
+                })
+              ) : (
+                <div className="w-full flex items-center justify-center text-xs text-slate-500 py-10">
+                  No interview scores recorded yet
                 </div>
-              ))}
+              )}
             </div>
           </Card>
 
@@ -197,7 +211,7 @@ function Performance() {
                 <div className="mx-auto flex h-36 w-36 items-center justify-center rounded-full border-8 border-violet-500/20 bg-slate-950/60 shadow-xl">
                   <div>
                     <span className="text-4xl font-extrabold text-white">{avgScore}%</span>
-                    <p className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Level Ready</p>
+                    <p className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Readiness</p>
                   </div>
                 </div>
               </div>

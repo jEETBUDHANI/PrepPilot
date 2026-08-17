@@ -1,9 +1,24 @@
-import { useState } from "react";
-import { Bell, Search, ChevronDown, User, Sparkles } from "lucide-react";
+import { useState, useEffect } from "react";
+import { Bell, Search, ChevronDown, Sparkles } from "lucide-react";
 import { Link } from "react-router-dom";
 
 function DashboardHeader() {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+  }, []);
+
+  const userName = user?.name || "User";
+  const userInitial = userName.charAt(0).toUpperCase();
 
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between gap-6 border-b border-white/[0.08] bg-[#030712]/80 px-6 py-4 backdrop-blur-xl lg:px-10">
@@ -42,11 +57,11 @@ function DashboardHeader() {
               <div className="space-y-2.5 text-xs">
                 <div className="rounded-xl bg-white/[0.04] p-2.5">
                   <p className="font-medium text-slate-200">Interview Evaluation Ready</p>
-                  <p className="text-slate-400 mt-0.5">Frontend Developer mock score: 92%</p>
+                  <p className="text-slate-400 mt-0.5">Mock session saved to your account.</p>
                 </div>
                 <div className="rounded-xl bg-white/[0.04] p-2.5">
                   <p className="font-medium text-slate-200">Resume Analysis Complete</p>
-                  <p className="text-slate-400 mt-0.5">ATS compatibility score is 84/100</p>
+                  <p className="text-slate-400 mt-0.5">ATS compatibility feedback ready.</p>
                 </div>
               </div>
             </div>
@@ -59,11 +74,11 @@ function DashboardHeader() {
           className="flex items-center gap-3 rounded-xl border border-white/10 bg-slate-900/60 p-1.5 pr-3 hover:border-white/20 transition-all group"
         >
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 font-bold text-white text-xs shadow-md">
-            U
+            {userInitial}
           </div>
           <div className="hidden sm:block text-left">
-            <p className="text-xs font-semibold text-slate-200 group-hover:text-violet-300 transition-colors">User</p>
-            <p className="text-[10px] text-slate-500">Candidate Pro</p>
+            <p className="text-xs font-semibold text-slate-200 group-hover:text-violet-300 transition-colors">{userName}</p>
+            <p className="text-[10px] text-slate-500">{user?.email || "Candidate Pro"}</p>
           </div>
           <ChevronDown className="hidden sm:block h-3.5 w-3.5 text-slate-500" />
         </Link>

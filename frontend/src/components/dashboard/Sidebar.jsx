@@ -10,7 +10,8 @@ import {
   ChevronRight,
   User,
 } from "lucide-react";
-import { NavLink, Link } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
+import { logoutUser } from "../../services/authService";
 
 const menuItems = [
   { name: "Dashboard", path: "/dashboard", icon: LayoutDashboard },
@@ -21,6 +22,13 @@ const menuItems = [
 ];
 
 function Sidebar() {
+  const navigate = useNavigate();
+
+  function handleLogout() {
+    logoutUser();
+    navigate("/login");
+  }
+
   return (
     <aside className="hidden lg:flex fixed left-0 top-0 z-40 h-screen w-72 flex-col border-r border-white/[0.08] bg-[#030712]/95 backdrop-blur-2xl">
       {/* BRAND */}
@@ -103,13 +111,14 @@ function Sidebar() {
           <span>Settings</span>
         </NavLink>
         
-        <Link
-          to="/login"
+        <button
+          type="button"
+          onClick={handleLogout}
           className="flex w-full items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium text-slate-400 hover:bg-rose-500/10 hover:text-rose-400 transition-colors"
         >
           <LogOut className="h-4 w-4" />
           <span>Sign Out</span>
-        </Link>
+        </button>
       </div>
     </aside>
   );

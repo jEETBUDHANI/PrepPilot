@@ -6,6 +6,7 @@ const connectDB = require("./config/db");
 const interviewRoutes = require("./routes/interviewRoutes");
 const authRoutes = require("./routes/authRoutes");
 const resumeRoutes = require("./routes/resumeRoutes");
+const performanceRoutes = require("./routes/performanceRoutes");
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -33,6 +34,7 @@ app.get("/api/health", (req, res) => {
 app.use("/api/interviews", interviewRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/resume", resumeRoutes);
+app.use("/api/performance", performanceRoutes);
 
 // 404 Handler
 app.use((req, res) => {

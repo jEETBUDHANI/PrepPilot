@@ -13,6 +13,7 @@ function isDBConnected() {
 async function createInterview(req, res) {
   try {
     const { role, difficulty, questionCount } = req.body;
+    const userId = req.user?.userId;
 
     if (!role || !difficulty || !questionCount) {
       return res.status(400).json({
@@ -29,8 +30,9 @@ async function createInterview(req, res) {
 
     let interview;
 
-    if (isDBConnected()) {
+    if (isDBConnected() && userId) {
       interview = await Interview.create({
+        user: userId,
         role,
         difficulty,
         questions: questions.map((q) => ({
@@ -39,10 +41,11 @@ async function createInterview(req, res) {
         })),
       });
     } else {
-      // In-memory fallback if MongoDB is not running locally
+      // Fallback object
       interview = {
         _id: Date.now().toString(),
         id: Date.now().toString(),
+        user: userId || "guest",
         role,
         difficulty,
         questionCount: questions.length,
@@ -71,6 +74,7 @@ async function createInterview(req, res) {
 async function evaluateInterview(req, res) {
   try {
     const { interviewId, role, answers } = req.body;
+    const userId = req.user?.userId;
 
     if (!role || !answers || !Array.isArray(answers) || answers.length === 0) {
       return res.status(400).json({
@@ -82,7 +86,10 @@ async function evaluateInterview(req, res) {
     let existingInterview = null;
 
     if (interviewId && isDBConnected() && mongoose.Types.ObjectId.isValid(interviewId)) {
-      existingInterview = await Interview.findById(interviewId);
+      existingInterview = await Interview.findOne({
+        _id: interviewId,
+        user: userId,
+      });
     }
 
     const difficulty = existingInterview ? existingInterview.difficulty : req.body.difficulty || "Medium";
@@ -153,15 +160,19 @@ async function evaluateInterview(req, res) {
 
 async function getInterviews(req, res) {
   try {
-    if (!isDBConnected()) {
+    const userId = req.user?.userId;
+
+    if (!isDBConnected() || !userId) {
       return res.status(200).json({
         success: true,
         interviews: [],
-        message: "MongoDB not connected. Operating in memory mode.",
+        message: "MongoDB not connected or user unauthenticated.",
       });
     }
 
-    const interviews = await Interview.find().sort({ createdAt: -1 });
+    const interviews = await Interview.find({ user: userId })
+      .select("role difficulty overallScore createdAt")
+      .sort({ createdAt: -1 });
 
     return res.status(200).json({
       success: true,
@@ -179,6 +190,7 @@ async function getInterviews(req, res) {
 async function getInterviewById(req, res) {
   try {
     const { id } = req.params;
+    const userId = req.user?.userId;
 
     if (!isDBConnected() || !mongoose.Types.ObjectId.isValid(id)) {
       return res.status(404).json({
@@ -187,7 +199,7 @@ async function getInterviewById(req, res) {
       });
     }
 
-    const interview = await Interview.findById(id);
+    const interview = await Interview.findOne({ _id: id, user: userId });
 
     if (!interview) {
       return res.status(404).json({

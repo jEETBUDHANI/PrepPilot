@@ -4,6 +4,8 @@ import { Link, useNavigate } from "react-router-dom";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
 
+import { registerUser } from "../services/authService";
+
 function Register() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -15,7 +17,7 @@ function Register() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!name || !email || !password || !confirmPassword) {
       setError("Please fill in all fields.");
@@ -32,10 +34,17 @@ function Register() {
     setError("");
     setIsLoading(true);
 
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      const data = await registerUser({ name, email, password });
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
       navigate("/dashboard");
-    }, 600);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Registration failed");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (

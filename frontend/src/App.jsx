@@ -11,33 +11,43 @@ import InterviewResult from "./pages/interviewResult";
 import ResumeAnalyser from "./pages/ResumeAnalyser";
 import Performance from "./pages/Performance";
 import Settings from "./pages/Settings";
+import ProtectedRoute from "./components/ProtectedRoute";
 import { useEffect } from "react";
 import { checkBackend } from "./services/api";
+
 function App() {
   useEffect(() => {
     checkBackend()
       .then((data) => {
-        console.log(data);
+        console.log("Backend check:", data);
       })
       .catch((error) => {
-        console.error(error);
+        console.error("Backend check failed:", error);
       });
   }, []);
+
   return (
     <Routes>
+      {/* PUBLIC ROUTES */}
       <Route path="/" element={<Home />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/forgot-password" element={<ForgotPassword />} />
-      <Route path="/dashboard" element={<Dashboard />} />
-      <Route path="/interview/setup" element={<InterviewSetup />} />
-      <Route path="/interview/result" element={<InterviewResult />} />
-      <Route path="/interview/:id" element={<Interview />} />
-      <Route path="/interview" element={<Interview />} />
-      <Route path="/resume" element={<ResumeAnalyser />} />
-      <Route path="/history" element={<InterviewHistory />} />
-      <Route path="/performance" element={<Performance />} />
-      <Route path="/settings" element={<Settings />} />
+
+      {/* PROTECTED ROUTES */}
+      <Route element={<ProtectedRoute />}>
+        <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/interview/setup" element={<InterviewSetup />} />
+        <Route path="/interview/result" element={<InterviewResult />} />
+        <Route path="/interview/:id" element={<Interview />} />
+        <Route path="/interview" element={<Interview />} />
+        <Route path="/resume" element={<ResumeAnalyser />} />
+        <Route path="/history" element={<InterviewHistory />} />
+        <Route path="/performance" element={<Performance />} />
+        <Route path="/settings" element={<Settings />} />
+      </Route>
+
+      {/* 404 NOT FOUND */}
       <Route
         path="*"
         element={
@@ -54,4 +64,5 @@ function App() {
     </Routes>
   );
 }
+
 export default App;

@@ -1,18 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   ArrowLeft,
   Bell,
   Check,
   Lock,
   Mail,
-  Moon,
   Save,
   Shield,
   User,
-  Trash2,
   Eye,
   EyeOff,
-  CheckCircle2,
   Sparkles,
 } from "lucide-react";
 import { Link } from "react-router-dom";
@@ -20,20 +17,56 @@ import Button from "../components/common/Button";
 import Card from "../components/common/Card";
 import Badge from "../components/common/Badge";
 import Input from "../components/common/Input";
+import { getProfile, updateProfile } from "../services/authService";
 
 function Settings() {
-  const [name, setName] = useState("Alex Johnson");
-  const [email, setEmail] = useState("alex@example.com");
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [notifications, setNotifications] = useState(true);
   const [weeklyReport, setWeeklyReport] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
   const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  function handleSave() {
-    setSaved(true);
-    setTimeout(() => {
-      setSaved(false);
-    }, 2000);
+  useEffect(() => {
+    async function loadProfile() {
+      try {
+        setLoading(true);
+        const data = await getProfile();
+        if (data.user) {
+          setName(data.user.name || "");
+          setEmail(data.user.email || "");
+          setNotifications(data.user.notifications ?? true);
+          setWeeklyReport(data.user.weeklyReport ?? true);
+        }
+      } catch (error) {
+        console.error("Failed to load profile:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+    loadProfile();
+  }, []);
+
+  async function handleSave() {
+    try {
+      const data = await updateProfile({
+        name,
+        notifications,
+        weeklyReport,
+      });
+
+      if (data.user) {
+        localStorage.setItem("user", JSON.stringify(data.user));
+      }
+
+      setSaved(true);
+      setTimeout(() => {
+        setSaved(false);
+      }, 2000);
+    } catch (error) {
+      console.error("Failed to update profile:", error);
+    }
   }
 
   return (
@@ -57,7 +90,7 @@ function Settings() {
           </div>
 
           <Badge variant="neutral" size="sm">
-            Candidate Pro
+            {name || "Candidate Pro"}
           </Badge>
         </div>
       </header>
@@ -94,12 +127,13 @@ function Settings() {
               value={name}
               onChange={(e) => setName(e.target.value)}
               icon={User}
+              disabled={loading}
             />
             <Input
               label="Email Address"
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              disabled
               icon={Mail}
             />
           </div>
@@ -121,7 +155,8 @@ function Settings() {
             <Input
               label="Current Password"
               type={showPassword ? "text" : "password"}
-              defaultValue="password123"
+              defaultValue="••••••••"
+              disabled
               icon={Lock}
               endIcon={showPassword ? EyeOff : Eye}
               onEndIconClick={() => setShowPassword(!showPassword)}
@@ -201,7 +236,7 @@ function Settings() {
 
         {/* SAVE ACTION */}
         <div className="flex justify-end pt-4">
-          <Button variant="glow" size="lg" onClick={handleSave}>
+          <Button variant="glow" size="lg" onClick={handleSave} disabled={loading}>
             {saved ? <Check className="h-4 w-4" /> : <Save className="h-4 w-4" />}
             {saved ? "Changes Saved!" : "Save Settings"}
           </Button>

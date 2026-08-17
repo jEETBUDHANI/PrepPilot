@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import {
   ArrowRight,
   Play,
@@ -6,40 +7,55 @@ import {
   Settings as SettingsIcon,
   BarChart3,
   Video,
-  Clock,
-  CheckCircle2,
-  TrendingUp,
-  Target,
 } from "lucide-react";
 import Sidebar from "../components/dashboard/Sidebar";
 import DashboardHeader from "../components/dashboard/DashboardHeader";
 import StatCard from "../components/dashboard/StatCard";
-import Card, { CardHeader, CardBody } from "../components/common/Card";
+import Card from "../components/common/Card";
 import Button from "../components/common/Button";
 import Badge from "../components/common/Badge";
 import { useNavigate } from "react-router-dom";
+import { getPerformance, getInterviews } from "../services/interviewService";
 
 function Dashboard() {
   const navigate = useNavigate();
+  const [performance, setPerformance] = useState(null);
+  const [recentSessions, setRecentSessions] = useState([]);
+  const [user, setUser] = useState(null);
 
-  const recentSessions = [
-    {
-      id: 1,
-      role: "Frontend Developer",
-      skills: "React • TypeScript • Tailwind",
-      score: 92,
-      date: "Today",
-      status: "Excellent",
-    },
-    {
-      id: 2,
-      role: "JavaScript Architect",
-      skills: "ES6+ • Async JS • Performance",
-      score: 81,
-      date: "Yesterday",
-      status: "Good",
-    },
-  ];
+  useEffect(() => {
+    // Load stored user
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      try {
+        setUser(JSON.parse(storedUser));
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function loadDashboardData() {
+      try {
+        const perfData = await getPerformance();
+        setPerformance(perfData.performance);
+
+        const intData = await getInterviews();
+        if (intData.interviews) {
+          setRecentSessions(intData.interviews.slice(0, 3));
+        }
+      } catch (error) {
+        console.error("Dashboard load error:", error);
+      }
+    }
+
+    loadDashboardData();
+  }, []);
+
+  const totalInterviews = performance?.totalInterviews ?? 0;
+  const avgScore = performance?.averageScore ?? 0;
+  const practiceHours = ((performance?.totalPracticeTime ?? 0) / 60).toFixed(1);
+  const bestScore = performance?.bestScore ?? 0;
+  const userName = user?.name || "Candidate";
 
   return (
     <div className="min-h-screen bg-[#030712] text-slate-100 flex">
@@ -58,10 +74,10 @@ function Dashboard() {
                   Candidate Workspace
                 </Badge>
                 <h1 className="mt-3 text-3xl font-extrabold tracking-tight text-white sm:text-4xl">
-                  Good morning, Candidate
+                  Welcome back, {userName}
                 </h1>
                 <p className="mt-2 text-sm text-slate-400 max-w-xl leading-relaxed">
-                  Your current interview readiness is at <span className="text-emerald-400 font-semibold">86%</span>. Keep building muscle memory before your next recruiter screen.
+                  Your current interview readiness is at <span className="text-emerald-400 font-semibold">{avgScore}%</span>. Keep practicing to refine your responses and technical depth.
                 </p>
               </div>
 
@@ -81,26 +97,26 @@ function Dashboard() {
           <section className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4">
             <StatCard
               title="Total Interviews"
-              value="24"
-              change="+12% this month"
+              value={totalInterviews.toString()}
+              change="From MongoDB"
               type="interviews"
             />
             <StatCard
               title="Average Score"
-              value="86%"
-              change="+8% this month"
+              value={`${avgScore}%`}
+              change="Overall average"
               type="score"
             />
             <StatCard
               title="Practice Hours"
-              value="18.5h"
-              change="+3.2h this week"
+              value={`${practiceHours}h`}
+              change="Total practice duration"
               type="hours"
             />
             <StatCard
-              title="Overall Progress"
-              value="72%"
-              change="+14% this month"
+              title="Best Score"
+              value={`${bestScore}%`}
+              change="Personal record"
               type="progress"
             />
           </section>
@@ -126,31 +142,39 @@ function Dashboard() {
                 </div>
 
                 <div className="mt-6 space-y-3">
-                  {recentSessions.map((session) => (
-                    <div
-                      key={session.id}
-                      className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-slate-900/60 p-4 backdrop-blur-md transition-all hover:border-violet-500/30 hover:bg-slate-900/90"
-                    >
-                      <div className="flex items-center gap-4">
-                        <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-600/15 text-violet-400 border border-violet-500/20">
-                          <Video className="h-5 w-5" />
+                  {recentSessions.length > 0 ? (
+                    recentSessions.map((session) => (
+                      <div
+                        key={session._id || session.id}
+                        className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-slate-900/60 p-4 backdrop-blur-md transition-all hover:border-violet-500/30 hover:bg-slate-900/90"
+                      >
+                        <div className="flex items-center gap-4">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-600/15 text-violet-400 border border-violet-500/20">
+                            <Video className="h-5 w-5" />
+                          </div>
+                          <div>
+                            <h3 className="font-semibold text-white text-sm">{session.role}</h3>
+                            <p className="text-xs text-slate-400 mt-0.5">{session.difficulty} Level</p>
+                          </div>
                         </div>
-                        <div>
-                          <h3 className="font-semibold text-white text-sm">{session.role}</h3>
-                          <p className="text-xs text-slate-400 mt-0.5">{session.skills}</p>
+                        <div className="text-right">
+                          <span className="text-base font-bold text-emerald-400">{session.overallScore || 0}%</span>
+                          <p className="text-[10px] text-slate-500">
+                            {session.createdAt ? new Date(session.createdAt).toLocaleDateString("en-US", { month: "short", day: "numeric" }) : "Recent"}
+                          </p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <span className="text-base font-bold text-emerald-400">{session.score}%</span>
-                        <p className="text-[10px] text-slate-500">{session.date}</p>
-                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8 text-xs text-slate-500">
+                      No recent mock interviews found. Start your first session now!
                     </div>
-                  ))}
+                  )}
                 </div>
               </div>
 
               <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs text-slate-400">
-                <span>Completed 2 mock sessions this week</span>
+                <span>{totalInterviews} sessions saved in database</span>
                 <span className="text-violet-400 font-semibold cursor-pointer" onClick={() => navigate("/interview/setup")}>+ New Mock</span>
               </div>
             </Card>
@@ -163,7 +187,7 @@ function Dashboard() {
                 </div>
                 <h2 className="mt-6 text-xl font-bold text-white">AI Coach Recommendation</h2>
                 <p className="mt-3 text-sm text-slate-300 leading-relaxed">
-                  Your technical accuracy is high (92%), but responses could benefit from structured STAR framework narratives for behavioral questions.
+                  Your overall score is {avgScore}%. Focus on expanding error handling scenarios and using STAR framework narratives for technical prompts.
                 </p>
               </div>
 
