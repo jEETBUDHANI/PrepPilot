@@ -2,10 +2,10 @@ import Button from "../common/Button";
 
 function Hero() {
   return (
-    <section className="rounded-3xl bg-gradient-to-br from-slate-950 via-violet-950 to-slate-900 px-6 py-16 text-white shadow-2xl shadow-violet-900/20 sm:px-10 lg:px-14">
+    <section className="rounded-3xl bg-gradient-to-br from-slate-950 via-amber-950 to-slate-900 px-6 py-16 text-white shadow-2xl shadow-amber-900/20 sm:px-10 lg:px-14">
       <div className="grid gap-12 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
         <div className="max-w-2xl">
-          <p className="text-sm uppercase tracking-[0.4em] text-violet-300">AI Interview Prep</p>
+          <p className="text-sm uppercase tracking-[0.4em] text-amber-300">AI Interview Prep</p>
           <h1 className="mt-6 text-5xl font-bold leading-tight sm:text-6xl">
             Master your next interview with AI-powered practice.
           </h1>
@@ -34,7 +34,7 @@ function Hero() {
 
         <div className="rounded-3xl border border-white/10 bg-white/5 p-8 text-slate-100 shadow-2xl shadow-black/20">
           <div className="rounded-3xl bg-slate-950/80 p-6">
-            <p className="uppercase tracking-[0.3em] text-xs text-violet-300">Live Mock Interview</p>
+            <p className="uppercase tracking-[0.3em] text-xs text-amber-300">Live Mock Interview</p>
             <h2 className="mt-4 text-2xl font-semibold">Ask your AI any question instantly.</h2>
             <p className="mt-4 text-slate-400">Get smarter follow-up prompts, answer feedback, and voice response guidance—all in one place.</p>
           </div>

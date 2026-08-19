@@ -1,20 +1,29 @@
+const { GoogleGenAI } = require("@google/genai");
 const OpenAI = require("openai");
 
-function hasValidApiKey() {
+// Helper to check Gemini Key
+function hasValidGeminiKey() {
+  const key = process.env.GEMINI_API_KEY;
+  return key && key !== "your_api_key_here" && !/your_/i.test(key);
+}
+
+// Helper to check OpenAI Key
+function hasValidOpenAIKey() {
   const key = process.env.OPENAI_API_KEY;
   return key && key !== "your_api_key_here" && !/your_/i.test(key);
 }
 
-function getOpenAIClient() {
-  if (!hasValidApiKey()) {
-    return null;
-  }
-  return new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY,
-  });
+function getGeminiClient() {
+  if (!hasValidGeminiKey()) return null;
+  return new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
 }
 
-// Fallback Generators for Dev mode when API Key is not set
+function getOpenAIClient() {
+  if (!hasValidOpenAIKey()) return null;
+  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+}
+
+// Fallback Generators for Dev mode when no API Key is configured
 function generateFallbackQuestions(role, difficulty, count) {
   const questionPool = {
     "Frontend Developer": [
@@ -111,13 +120,12 @@ function generateFallbackEvaluation(role, difficulty, answers) {
   };
 }
 
+/**
+ * GENERATE INTERVIEW QUESTIONS USING GEMINI / OPENAI / FALLBACK
+ */
 async function generateInterviewQuestions({ role, difficulty, questionCount }) {
-  const client = getOpenAIClient();
-
-  if (!client) {
-    console.log("OPENAI_API_KEY not configured. Using fallback interview question generator.");
-    return generateFallbackQuestions(role, difficulty, questionCount);
-  }
+  const gemini = getGeminiClient();
+  const openai = getOpenAIClient();
 
   const prompt = `You are an expert technical interviewer.
 Generate ${questionCount} interview questions for a ${role} position.
@@ -139,32 +147,60 @@ Return JSON in this format:
   ]
 }`;
 
-  try {
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: "You are an expert technical interviewer outputting valid JSON." },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.7,
-    });
+  // 1. Try Gemini API
+  if (gemini) {
+    try {
+      console.log("Generating interview questions using Google Gemini AI...");
+      const response = await gemini.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          temperature: 0.7,
+        },
+      });
 
-    const result = JSON.parse(completion.choices[0].message.content);
-    return result.questions || generateFallbackQuestions(role, difficulty, questionCount);
-  } catch (error) {
-    console.error("AI Question Generation Error:", error.message);
-    return generateFallbackQuestions(role, difficulty, questionCount);
+      const result = JSON.parse(response.text);
+      if (result.questions && Array.isArray(result.questions)) {
+        return result.questions;
+      }
+    } catch (error) {
+      console.error("Gemini Question Generation Error:", error.message);
+    }
   }
+
+  // 2. Try OpenAI API
+  if (openai) {
+    try {
+      console.log("Generating interview questions using OpenAI...");
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: "You are an expert technical interviewer outputting valid JSON." },
+          { role: "user", content: prompt },
+        ],
+        temperature: 0.7,
+      });
+
+      const result = JSON.parse(completion.choices[0].message.content);
+      return result.questions || generateFallbackQuestions(role, difficulty, questionCount);
+    } catch (error) {
+      console.error("OpenAI Question Generation Error:", error.message);
+    }
+  }
+
+  // 3. Fallback for Dev mode
+  console.log("Using local fallback question generator (No API key configured).");
+  return generateFallbackQuestions(role, difficulty, questionCount);
 }
 
+/**
+ * EVALUATE INTERVIEW ANSWERS USING GEMINI / OPENAI / FALLBACK
+ */
 async function evaluateInterviewAnswers({ role, difficulty = "Medium", answers }) {
-  const client = getOpenAIClient();
-
-  if (!client) {
-    console.log("OPENAI_API_KEY not configured. Using fallback evaluation generator.");
-    return generateFallbackEvaluation(role, difficulty, answers);
-  }
+  const gemini = getGeminiClient();
+  const openai = getOpenAIClient();
 
   const answersText = answers
     .map((item, index) => `Question ${index + 1}: ${item.question}\nCandidate Answer: ${item.answer}`)
@@ -194,173 +230,159 @@ Evaluate comprehensively. Return ONLY valid JSON in this exact structure:
   ]
 }`;
 
-  try {
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: "You are an expert technical evaluator outputting valid JSON." },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.5,
-    });
-
-    const parsed = JSON.parse(completion.choices[0].message.content);
-    return {
-      ...parsed,
-      overallScore: parsed.score || parsed.overallScore || 80,
-    };
-  } catch (error) {
-    console.error("AI Evaluation Error:", error.message);
-    return generateFallbackEvaluation(role, difficulty, answers);
-  }
-}
-
-async function analyzeResumeWithAI({ resumeText, role = "Frontend Developer" }) {
-  const client = getOpenAIClient();
-
-  if (!client) {
-    return {
-      atsScore: 84,
-      summary: "Resume contains a solid technical foundation. Good structure and modern developer skill keywords.",
-      skills: ["React", "JavaScript", "TypeScript", "HTML/CSS", "REST API", "Git"],
-      suggestions: [
-        {
-          title: "Add measurable impact",
-          description: "Include percentage performance gains or user scale metrics in your project descriptions.",
+  // 1. Try Gemini API
+  if (gemini) {
+    try {
+      console.log("Evaluating interview answers using Google Gemini AI...");
+      const response = await gemini.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          temperature: 0.5,
         },
-        {
-          title: "Optimize ATS keywords",
-          description: "Align bullet points with modern frontend job spec keywords.",
-        },
-      ],
-    };
-  }
+      });
 
-  const prompt = `Analyze this resume for a ${role} position.
-Resume Text: ${resumeText || "Sample Resume"}
-
-Return JSON in this format:
-{
-  "atsScore": 85,
-  "summary": "Overall assessment...",
-  "skills": ["Skill 1", "Skill 2"],
-  "suggestions": [
-    {
-      "title": "Suggestion Title",
-      "description": "Suggestion Details"
+      const parsed = JSON.parse(response.text);
+      return {
+        ...parsed,
+        overallScore: parsed.score || parsed.overallScore || 80,
+      };
+    } catch (error) {
+      console.error("Gemini Evaluation Error:", error.message);
     }
-  ]
-}`;
-
-  try {
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: "You are an expert ATS resume reviewer outputting JSON." },
-        { role: "user", content: prompt },
-      ],
-    });
-
-    return JSON.parse(completion.choices[0].message.content);
-  } catch (error) {
-    console.error("AI Resume Analysis Error:", error.message);
-    return {
-      atsScore: 80,
-      summary: "Resume parsed successfully. Strong candidate profile with key tech stack.",
-      skills: ["React", "JavaScript", "HTML/CSS", "Git"],
-      suggestions: [
-        {
-          title: "Quantify accomplishments",
-          description: "Mention specific metrics and outcomes.",
-        },
-      ],
-    };
   }
+
+  // 2. Try OpenAI API
+  if (openai) {
+    try {
+      console.log("Evaluating interview answers using OpenAI...");
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: "You are an expert technical evaluator outputting valid JSON." },
+          { role: "user", content: prompt },
+        ],
+        temperature: 0.5,
+      });
+
+      const parsed = JSON.parse(completion.choices[0].message.content);
+      return {
+        ...parsed,
+        overallScore: parsed.score || parsed.overallScore || 80,
+      };
+    } catch (error) {
+      console.error("OpenAI Evaluation Error:", error.message);
+    }
+  }
+
+  // 3. Fallback
+  console.log("Using local fallback evaluation generator (No API key configured).");
+  return generateFallbackEvaluation(role, difficulty, answers);
 }
 
-async function analyzeResume(resumeText) {
-  const client = getOpenAIClient();
+/**
+ * ANALYZE RESUME USING GEMINI / OPENAI / FALLBACK
+ */
+async function analyzeResume(resumeText, role = "Full Stack Developer") {
+  const gemini = getGeminiClient();
+  const openai = getOpenAIClient();
 
-  if (!client) {
-    return {
-      atsScore: 84,
-      summary: "Resume contains a strong technical foundation with good project experience.",
-      skills: ["React", "JavaScript", "Node.js", "Express", "MongoDB", "TailwindCSS"],
-      strengths: ["Strong technical project experience", "Modern web stack keywords"],
-      improvements: [
-        "Add measurable achievements and performance metrics to work experience",
-        "Include links to live project demos or GitHub repositories",
-      ],
-    };
-  }
+  const prompt = `You are an expert ATS (Applicant Tracking System) resume analyzer.
 
-  const prompt = `You are an expert ATS resume analyzer.
-
-Analyze the following resume.
+Analyze the following resume text for a target role of "${role}".
 
 Evaluate:
+1. ATS compatibility score (0 to 100)
+2. Executive Summary of candidate profile
+3. Detected technical skills (array of strings)
+4. Key resume strengths (array of strings)
+5. Prioritized action items / improvements (array of strings)
 
-1. ATS compatibility
-2. Technical skills
-3. Resume strengths
-4. Missing or weak areas
-5. Overall quality
-
-Return ONLY valid JSON.
-
-Use exactly this structure:
-
+Return ONLY valid JSON in this exact structure:
 {
   "atsScore": 84,
-  "summary": "Short overall analysis",
-  "skills": [
-    "React",
-    "JavaScript"
-  ],
-  "strengths": [
-    "Strong project experience"
-  ],
-  "improvements": [
-    "Add measurable achievements"
-  ]
+  "summary": "Short professional summary of the resume and qualifications.",
+  "skills": ["React", "Node.js", "JavaScript", "MongoDB"],
+  "strengths": ["Strong project experience", "Modern full-stack technical keywords"],
+  "improvements": ["Add quantitative impact metrics", "Include link to live demo"]
 }
 
-Resume:
-
+Resume Text:
 ${resumeText}
 `;
 
-  try {
-    const completion = await client.chat.completions.create({
-      model: "gpt-4o-mini",
-      response_format: { type: "json_object" },
-      messages: [
-        { role: "system", content: "You are an expert ATS resume analyzer outputting valid JSON." },
-        { role: "user", content: prompt },
-      ],
-      temperature: 0.5,
-    });
+  // 1. Try Gemini API
+  if (gemini) {
+    try {
+      console.log("Analyzing resume text using Google Gemini AI...");
+      const response = await gemini.models.generateContent({
+        model: "gemini-2.5-flash",
+        contents: prompt,
+        config: {
+          responseMimeType: "application/json",
+          temperature: 0.3,
+        },
+      });
 
-    const parsed = JSON.parse(completion.choices[0].message.content);
-    return {
-      atsScore: parsed.atsScore || 80,
-      summary: parsed.summary || "Resume analyzed successfully.",
-      skills: parsed.skills || [],
-      strengths: parsed.strengths || [],
-      improvements: parsed.improvements || [],
-    };
-  } catch (error) {
-    console.error("AI Resume Analysis Error:", error.message);
-    return {
-      atsScore: 80,
-      summary: "Resume text extracted and analyzed successfully.",
-      skills: ["React", "JavaScript", "HTML/CSS", "Git"],
-      strengths: ["Clean resume formatting and structure"],
-      improvements: ["Add quantitative impact metrics to project bullet points"],
-    };
+      const parsed = JSON.parse(response.text);
+      return {
+        atsScore: parsed.atsScore || 82,
+        summary: parsed.summary || "Resume analyzed successfully by Gemini AI.",
+        skills: parsed.skills || [],
+        strengths: parsed.strengths || [],
+        improvements: parsed.improvements || [],
+      };
+    } catch (error) {
+      console.error("Gemini Resume Analysis Error:", error.message);
+    }
   }
+
+  // 2. Try OpenAI API
+  if (openai) {
+    try {
+      console.log("Analyzing resume text using OpenAI...");
+      const completion = await openai.chat.completions.create({
+        model: "gpt-4o-mini",
+        response_format: { type: "json_object" },
+        messages: [
+          { role: "system", content: "You are an expert ATS resume analyzer outputting valid JSON." },
+          { role: "user", content: prompt },
+        ],
+        temperature: 0.3,
+      });
+
+      const parsed = JSON.parse(completion.choices[0].message.content);
+      return {
+        atsScore: parsed.atsScore || 80,
+        summary: parsed.summary || "Resume analyzed successfully.",
+        skills: parsed.skills || [],
+        strengths: parsed.strengths || [],
+        improvements: parsed.improvements || [],
+      };
+    } catch (error) {
+      console.error("OpenAI Resume Analysis Error:", error.message);
+    }
+  }
+
+  // 3. Fallback
+  console.log("Using fallback resume analyzer (No API key configured).");
+  return {
+    atsScore: 84,
+    summary: "Resume parsed successfully. Strong technical background detected.",
+    skills: ["React", "JavaScript", "Node.js", "Express", "MongoDB", "TailwindCSS"],
+    strengths: ["Strong technical project experience", "Modern web stack keywords"],
+    improvements: [
+      "Add measurable achievements and performance metrics to work experience",
+      "Include links to live project demos or GitHub repositories",
+      "Format section headers for better ATS parsing",
+    ],
+  };
+}
+
+async function analyzeResumeWithAI({ resumeText, role }) {
+  return analyzeResume(resumeText, role);
 }
 
 module.exports = {
@@ -370,4 +392,3 @@ module.exports = {
   analyzeResumeWithAI,
   analyzeResume,
 };
-

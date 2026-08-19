@@ -50,16 +50,16 @@ function Register() {
   return (
     <main className="min-h-screen bg-[#030712] text-slate-100 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
       {/* Background Orbs */}
-      <div className="glow-orb-violet top-10 right-10 h-96 w-96 opacity-30 pointer-events-none" />
+      <div className="glow-orb-amber top-10 right-10 h-96 w-96 opacity-30 pointer-events-none" />
       <div className="glow-orb-cyan bottom-10 left-10 h-96 w-96 opacity-20 pointer-events-none" />
 
       <div className="w-full max-w-xl rounded-3xl border border-white/[0.08] bg-[#080d1a]/80 backdrop-blur-2xl shadow-2xl p-8 sm:p-12 relative z-10">
         <div className="text-center max-w-md mx-auto">
           <Link to="/" className="inline-flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 font-bold text-white shadow-lg shadow-violet-600/30">
+            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-orange-600 font-bold text-white shadow-lg shadow-amber-600/30">
               <Sparkles className="h-5 w-5" />
             </div>
-            <span className="font-bold text-white text-xl tracking-tight">PrepPilot</span>
+            <span className="font-bold text-white text-xl tracking-tight">HireFlux</span>
           </Link>
 
           <h1 className="mt-6 text-3xl font-extrabold tracking-tight text-white">Create your account</h1>
@@ -129,7 +129,7 @@ function Register() {
 
         <p className="mt-8 text-center text-xs sm:text-sm text-slate-400">
           Already have an account?{" "}
-          <Link to="/login" className="font-semibold text-violet-400 hover:text-violet-300">
+          <Link to="/login" className="font-semibold text-amber-400 hover:text-amber-300">
             Sign in
           </Link>
         </p>

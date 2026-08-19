@@ -67,7 +67,7 @@ function InterviewHistory() {
           </Link>
 
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 font-bold text-white shadow-md">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-orange-600 font-bold text-white shadow-md">
               <Video className="h-4 w-4" />
             </div>
             <span className="font-bold text-white text-sm">Interview History</span>
@@ -111,7 +111,7 @@ function InterviewHistory() {
           </Card>
           <Card variant="default" className="p-5">
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Personal Best</p>
-            <p className="mt-2 text-3xl font-extrabold text-violet-400">{bestScore}%</p>
+            <p className="mt-2 text-3xl font-extrabold text-amber-400">{bestScore}%</p>
           </Card>
           <Card variant="default" className="p-5">
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Database Status</p>
@@ -139,7 +139,7 @@ function InterviewHistory() {
                 onClick={() => setFilter(item)}
                 className={`rounded-xl px-3.5 py-2 text-xs font-semibold transition-all ${
                   filter === item
-                    ? "bg-violet-600 text-white shadow-md shadow-violet-600/30"
+                    ? "bg-amber-600 text-white shadow-md shadow-amber-600/30"
                     : "bg-slate-900/60 border border-white/10 text-slate-400 hover:text-white"
                 }`}
               >
@@ -152,7 +152,7 @@ function InterviewHistory() {
         {/* HISTORY LIST */}
         {loading ? (
           <div className="py-12 text-center">
-            <Loader2 className="h-8 w-8 animate-spin text-violet-400 mx-auto" />
+            <Loader2 className="h-8 w-8 animate-spin text-amber-400 mx-auto" />
             <p className="text-xs text-slate-400 mt-2">Fetching sessions from MongoDB...</p>
           </div>
         ) : (
@@ -176,7 +176,7 @@ function InterviewHistory() {
                     className="p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 group"
                   >
                     <div className="flex items-center gap-4">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-600/15 text-violet-400 border border-violet-500/20">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-600/15 text-amber-400 border border-amber-500/20">
                         <Video className="h-6 w-6" />
                       </div>
 
@@ -190,7 +190,7 @@ function InterviewHistory() {
                             <Calendar className="h-3.5 w-3.5" /> {dateStr}
                           </span>
                           <span>{qCount} Questions</span>
-                          <span className="text-violet-400">{item.difficulty}</span>
+                          <span className="text-amber-400">{item.difficulty}</span>
                         </div>
                       </div>
                     </div>
@@ -200,7 +200,7 @@ function InterviewHistory() {
                         <p className="text-[10px] uppercase tracking-wider text-slate-500">Score</p>
                         <span className="text-xl font-extrabold text-emerald-400">{score}%</span>
                       </div>
-                      <ChevronRight className="h-5 w-5 text-slate-500 group-hover:translate-x-1 group-hover:text-violet-400 transition-all" />
+                      <ChevronRight className="h-5 w-5 text-slate-500 group-hover:translate-x-1 group-hover:text-amber-400 transition-all" />
                     </div>
                   </Card>
                 );
@@ -212,7 +212,7 @@ function InterviewHistory() {
                 <p className="text-xs text-slate-500 mt-1">Complete your first mock interview to view historical records.</p>
                 <Link
                   to="/interview/setup"
-                  className="mt-5 inline-flex rounded-xl bg-violet-600 px-5 py-2.5 text-xs font-semibold text-white hover:bg-violet-500 transition-colors shadow-md shadow-violet-600/20"
+                  className="mt-5 inline-flex rounded-xl bg-amber-600 px-5 py-2.5 text-xs font-semibold text-white hover:bg-amber-500 transition-colors shadow-md shadow-amber-600/20"
                 >
                   Start Interview
                 </Link>

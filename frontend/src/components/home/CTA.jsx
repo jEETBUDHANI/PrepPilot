@@ -3,7 +3,7 @@ import Container from "../common/Container";
 
 function CTA() {
   return (
-    <section className="bg-gradient-to-r from-violet-600 via-fuchsia-600 to-sky-500 py-16 text-white shadow-2xl shadow-violet-600/20">
+    <section className="bg-gradient-to-r from-amber-600 via-amber-600 to-sky-500 py-16 text-white shadow-2xl shadow-amber-600/20">
       <Container>
         <div className="grid gap-10 lg:grid-cols-[1.2fr_0.8fr] lg:items-center">
           <div>

@@ -3,16 +3,16 @@ import { Sparkles } from "lucide-react";
 
 function Footer() {
   return (
-    <footer className="border-t border-white/[0.08] bg-[#02050e] text-slate-400">
+    <footer className="border-t border-slate-200 bg-white text-slate-500">
       <div className="mx-auto max-w-7xl px-6 py-16 lg:px-8">
         <div className="grid gap-10 md:grid-cols-2 lg:grid-cols-5">
           {/* BRAND */}
           <div className="lg:col-span-2 space-y-4">
             <Link to="/" className="flex items-center gap-3">
-              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 font-bold text-white shadow-md shadow-violet-600/30">
+              <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-orange-600 font-bold text-white shadow-md shadow-amber-600/30">
                 <Sparkles className="h-4 w-4" />
               </div>
-              <span className="font-bold text-white text-lg tracking-tight">PrepPilot</span>
+              <span className="font-bold text-white text-lg tracking-tight">HireFlux</span>
             </Link>
             <p className="max-w-sm text-sm text-slate-400 leading-relaxed">
               The AI-powered interview practice platform designed to transform job anxiety into high performance and interview confidence.
@@ -58,7 +58,7 @@ function Footer() {
         </div>
 
         <div className="mt-14 pt-8 border-t border-white/[0.06] flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
-          <p>© {new Date().getFullYear()} PrepPilot Inc. All rights reserved.</p>
+          <p>© {new Date().getFullYear()} HireFlux Inc. All rights reserved.</p>
           <div className="flex items-center gap-6">
             <a href="#" className="hover:text-slate-400 transition-colors">Privacy Policy</a>
             <a href="#" className="hover:text-slate-400 transition-colors">Terms of Service</a>

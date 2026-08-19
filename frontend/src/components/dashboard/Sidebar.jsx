@@ -34,11 +34,11 @@ function Sidebar() {
       {/* BRAND */}
       <div className="flex h-20 items-center gap-3 border-b border-white/[0.08] px-7">
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 via-indigo-600 to-cyan-500 font-bold text-white shadow-lg shadow-violet-600/30">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 via-orange-600 to-cyan-500 font-bold text-white shadow-lg shadow-amber-600/30">
             <Sparkles className="h-5 w-5" />
           </div>
           <div>
-            <h2 className="font-bold tracking-tight text-white text-base">PrepPilot</h2>
+            <h2 className="font-bold tracking-tight text-white text-base">HireFlux</h2>
             <p className="text-[10px] uppercase tracking-[2px] text-slate-400 font-medium">
               SaaS Workspace
             </p>
@@ -62,7 +62,7 @@ function Sidebar() {
                   className={({ isActive }) =>
                     `group flex items-center gap-3.5 rounded-xl px-3.5 py-3 text-sm font-medium transition-all duration-200 ${
                       isActive
-                        ? "bg-violet-600/15 text-violet-300 border border-violet-500/30 shadow-md shadow-violet-500/10"
+                        ? "bg-amber-600/15 text-amber-300 border border-amber-500/30 shadow-md shadow-amber-500/10"
                         : "text-slate-400 hover:bg-white/[0.04] hover:text-slate-200"
                     }`
                   }
@@ -76,9 +76,9 @@ function Sidebar() {
         </div>
 
         {/* AI SPOTLIGHT BOX */}
-        <div className="relative overflow-hidden rounded-2xl border border-violet-500/20 bg-gradient-to-b from-violet-950/40 to-slate-900/60 p-4">
-          <div className="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-violet-500/10 blur-xl pointer-events-none" />
-          <div className="flex items-center gap-2 text-violet-300 font-medium text-xs">
+        <div className="relative overflow-hidden rounded-2xl border border-amber-500/20 bg-gradient-to-b from-amber-950/40 to-slate-900/60 p-4">
+          <div className="absolute -right-6 -top-6 h-20 w-20 rounded-full bg-amber-500/10 blur-xl pointer-events-none" />
+          <div className="flex items-center gap-2 text-amber-300 font-medium text-xs">
             <Sparkles className="h-4 w-4" />
             <span>AI Practice Coach</span>
           </div>
@@ -87,7 +87,7 @@ function Sidebar() {
           </p>
           <Link
             to="/interview/setup"
-            className="mt-3.5 inline-flex items-center gap-1.5 text-xs font-semibold text-violet-400 hover:text-violet-300 transition-colors"
+            className="mt-3.5 inline-flex items-center gap-1.5 text-xs font-semibold text-amber-400 hover:text-amber-300 transition-colors"
           >
             <span>Start Practice</span>
             <ChevronRight className="h-3.5 w-3.5" />

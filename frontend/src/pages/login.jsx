@@ -40,21 +40,21 @@ function Login() {
   return (
     <main className="min-h-screen bg-[#030712] text-slate-100 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
       {/* Background Orbs */}
-      <div className="glow-orb-violet top-10 left-10 h-96 w-96 opacity-30 pointer-events-none" />
+      <div className="glow-orb-amber top-10 left-10 h-96 w-96 opacity-30 pointer-events-none" />
       <div className="glow-orb-cyan bottom-10 right-10 h-96 w-96 opacity-20 pointer-events-none" />
 
       <div className="w-full max-w-5xl grid lg:grid-cols-2 rounded-3xl border border-white/[0.08] bg-[#080d1a]/80 backdrop-blur-2xl shadow-2xl overflow-hidden relative z-10">
         {/* LEFT SHOWCASE */}
-        <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-violet-950/60 via-slate-900/90 to-indigo-950/50 p-12 border-r border-white/[0.08]">
+        <div className="hidden lg:flex flex-col justify-between bg-gradient-to-br from-amber-950/60 via-slate-900/90 to-orange-950/50 p-12 border-r border-white/[0.08]">
           <Link to="/" className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 font-bold text-white shadow-lg shadow-violet-600/30">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-orange-600 font-bold text-white shadow-lg shadow-amber-600/30">
               <Sparkles className="h-5 w-5" />
             </div>
-            <span className="font-bold text-white text-lg tracking-tight">PrepPilot</span>
+            <span className="font-bold text-white text-lg tracking-tight">HireFlux</span>
           </Link>
 
           <div className="space-y-6">
-            <span className="rounded-full bg-violet-500/10 px-3 py-1 text-xs font-semibold text-violet-300 border border-violet-500/20">
+            <span className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-semibold text-amber-300 border border-amber-500/20">
               Candidate Workspace
             </span>
             <h1 className="text-4xl font-extrabold tracking-tight text-white leading-tight">
@@ -73,14 +73,14 @@ function Login() {
             </div>
           </div>
 
-          <p className="text-xs text-slate-500">© PrepPilot Inc. Next-Gen Career Preparation.</p>
+          <p className="text-xs text-slate-500">© HireFlux Inc. Next-Gen Career Preparation.</p>
         </div>
 
         {/* RIGHT FORM */}
         <div className="p-8 sm:p-12 flex flex-col justify-center">
           <div className="max-w-md mx-auto w-full">
             <div className="mb-8">
-              <span className="text-xs font-semibold uppercase tracking-[2px] text-violet-400">Sign In</span>
+              <span className="text-xs font-semibold uppercase tracking-[2px] text-amber-400">Sign In</span>
               <h2 className="mt-2 text-3xl font-bold tracking-tight text-white">Welcome back</h2>
               <p className="mt-2 text-sm text-slate-400">Enter your credentials to access your dashboard.</p>
             </div>
@@ -115,7 +115,7 @@ function Login() {
                   required
                 />
                 <div className="mt-2 flex justify-end">
-                  <Link to="/forgot-password" className="text-xs text-violet-400 hover:text-violet-300 font-medium">
+                  <Link to="/forgot-password" className="text-xs text-amber-400 hover:text-amber-300 font-medium">
                     Forgot password?
                   </Link>
                 </div>
@@ -129,7 +129,7 @@ function Login() {
 
             <p className="mt-8 text-center text-xs sm:text-sm text-slate-400">
               Don't have an account?{" "}
-              <Link to="/register" className="font-semibold text-violet-400 hover:text-violet-300">
+              <Link to="/register" className="font-semibold text-amber-400 hover:text-amber-300">
                 Create one now
               </Link>
             </p>

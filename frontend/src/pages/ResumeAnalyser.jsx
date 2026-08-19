@@ -84,7 +84,7 @@ function ResumeAnalyzer() {
           </Link>
 
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-cyan-500 font-bold text-white shadow-md">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-cyan-500 font-bold text-white shadow-md">
               <FileText className="h-4 w-4" />
             </div>
             <span className="font-bold text-white text-sm">Resume ATS Scanner</span>
@@ -119,7 +119,7 @@ function ResumeAnalyzer() {
         {!analyzed && (
           <section className="mt-8">
             {!file ? (
-              <label className="group flex min-h-[320px] cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-white/15 bg-slate-900/40 p-10 text-center transition-all hover:border-violet-500/50 hover:bg-slate-900/80 backdrop-blur-xl">
+              <label className="group flex min-h-[320px] cursor-pointer flex-col items-center justify-center rounded-3xl border-2 border-dashed border-white/15 bg-slate-900/40 p-10 text-center transition-all hover:border-amber-500/50 hover:bg-slate-900/80 backdrop-blur-xl">
                 <input
                   type="file"
                   accept=".pdf"
@@ -127,7 +127,7 @@ function ResumeAnalyzer() {
                   className="hidden"
                 />
 
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-violet-600/15 text-violet-400 border border-violet-500/20 transition-transform group-hover:scale-110">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-amber-600/15 text-amber-400 border border-amber-500/20 transition-transform group-hover:scale-110">
                   <Upload className="h-8 w-8" />
                 </div>
 
@@ -203,7 +203,7 @@ function ResumeAnalyzer() {
 
                 <div className="mt-6 h-2 overflow-hidden rounded-full bg-white/10">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-violet-600 to-emerald-400"
+                    className="h-full rounded-full bg-gradient-to-r from-amber-600 to-emerald-400"
                     style={{ width: `${analysis.atsScore}%` }}
                   />
                 </div>
@@ -212,7 +212,7 @@ function ResumeAnalyzer() {
               <Card variant="default" className="lg:col-span-2 p-6 flex flex-col justify-between">
                 <div>
                   <div className="flex items-center gap-2.5 border-b border-white/10 pb-4">
-                    <Sparkles className="h-5 w-5 text-violet-400" />
+                    <Sparkles className="h-5 w-5 text-amber-400" />
                     <h3 className="font-bold text-white text-base">AI Executive Summary</h3>
                   </div>
                   <p className="mt-4 text-xs sm:text-sm text-slate-300 leading-relaxed">

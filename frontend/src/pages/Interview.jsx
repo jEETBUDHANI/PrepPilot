@@ -129,7 +129,7 @@ function Interview() {
           </Link>
 
           <div className="flex items-center gap-3">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 font-bold text-white shadow-md shadow-violet-600/30">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-orange-600 font-bold text-white shadow-md shadow-amber-600/30">
               <Sparkles className="h-4 w-4" />
             </div>
             <div>
@@ -152,11 +152,11 @@ function Interview() {
             <span className="text-slate-400">
               Question {currentQuestion + 1} of {totalQuestions}
             </span>
-            <span className="text-violet-400 font-semibold">{Math.round(progress)}% Completed</span>
+            <span className="text-amber-400 font-semibold">{Math.round(progress)}% Completed</span>
           </div>
           <div className="h-2 overflow-hidden rounded-full bg-white/10">
             <div
-              className="h-full rounded-full bg-gradient-to-r from-violet-600 to-cyan-400 transition-all duration-500"
+              className="h-full rounded-full bg-gradient-to-r from-amber-600 to-cyan-400 transition-all duration-500"
               style={{ width: `${progress}%` }}
             />
           </div>
@@ -166,11 +166,11 @@ function Interview() {
         <Card variant="gradient" className="p-6 sm:p-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600/20 text-violet-400 border border-violet-500/20">
+              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-600/20 text-amber-400 border border-amber-500/20">
                 <Sparkles className="h-5 w-5" />
               </div>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-wider text-violet-400">AI Interviewer</p>
+                <p className="text-xs font-semibold uppercase tracking-wider text-amber-400">AI Interviewer</p>
                 <p className="text-[10px] text-slate-400">Technical Depth Question</p>
               </div>
             </div>
@@ -201,7 +201,7 @@ function Interview() {
             onChange={(e) => setAnswer(e.target.value)}
             placeholder="Type your structured answer here... Be clear, specific, and mention code architecture principles where applicable."
             rows={8}
-            className="w-full resize-none rounded-xl border border-white/10 bg-slate-950/60 p-4 text-sm leading-relaxed text-slate-100 placeholder:text-slate-600 outline-none backdrop-blur-md transition-all focus:border-violet-500/80 focus:ring-4 focus:ring-violet-500/10"
+            className="w-full resize-none rounded-xl border border-white/10 bg-slate-950/60 p-4 text-sm leading-relaxed text-slate-100 placeholder:text-slate-600 outline-none backdrop-blur-md transition-all focus:border-amber-500/80 focus:ring-4 focus:ring-amber-500/10"
           />
 
           <div className="mt-5 flex flex-col sm:flex-row items-center justify-between gap-4">
@@ -258,7 +258,7 @@ function Interview() {
                 key={item._id || item.questionId || item.id || index}
                 className={`flex h-9 w-9 items-center justify-center rounded-xl text-xs font-semibold transition-all ${
                   active
-                    ? "bg-violet-600 text-white shadow-lg shadow-violet-600/30 ring-2 ring-violet-400"
+                    ? "bg-amber-600 text-white shadow-lg shadow-amber-600/30 ring-2 ring-amber-400"
                     : answered
                     ? "bg-emerald-500/15 border border-emerald-500/30 text-emerald-400"
                     : "bg-white/5 border border-white/10 text-slate-500"

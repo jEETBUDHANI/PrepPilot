@@ -15,23 +15,23 @@ function Badge({
   };
 
   const variants = {
-    purple: "bg-violet-500/10 border-violet-500/30 text-violet-300",
-    cyan: "bg-cyan-500/10 border-cyan-500/30 text-cyan-300",
-    emerald: "bg-emerald-500/10 border-emerald-500/30 text-emerald-300",
-    amber: "bg-amber-500/10 border-amber-500/30 text-amber-300",
-    rose: "bg-rose-500/10 border-rose-500/30 text-rose-300",
-    neutral: "bg-white/5 border-white/10 text-slate-300",
-    glow: "bg-gradient-to-r from-violet-500/20 to-cyan-500/20 border-violet-400/30 text-violet-200 shadow-[0_0_15px_rgba(139,92,246,0.2)]",
+    purple: "bg-sky-100 border-sky-200 text-sky-700",
+    cyan: "bg-sky-100 border-sky-200 text-sky-700",
+    emerald: "bg-emerald-100 border-emerald-200 text-emerald-700",
+    amber: "bg-orange-100 border-orange-200 text-orange-700",
+    rose: "bg-rose-100 border-rose-200 text-rose-700",
+    neutral: "bg-slate-100 border-slate-200 text-slate-600",
+    glow: "bg-gradient-to-r from-sky-100 via-white to-orange-100 border-sky-200 text-sky-700 shadow-[0_0_15px_rgba(2,132,199,0.12)]",
   };
 
   const dotColors = {
-    purple: "bg-violet-400",
-    cyan: "bg-cyan-400",
-    emerald: "bg-emerald-400",
-    amber: "bg-amber-400",
-    rose: "bg-rose-400",
-    neutral: "bg-slate-400",
-    glow: "bg-violet-300",
+    purple: "bg-sky-500",
+    cyan: "bg-sky-500",
+    emerald: "bg-emerald-500",
+    amber: "bg-orange-500",
+    rose: "bg-rose-500",
+    neutral: "bg-slate-500",
+    glow: "bg-sky-500",
   };
 
   return (

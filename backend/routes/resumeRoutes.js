@@ -47,7 +47,8 @@ router.post(
         });
       }
 
-      const analysis = await analyzeResume(resumeText);
+      const role = req.body?.role || "Full Stack Developer";
+      const analysis = await analyzeResume(resumeText, role);
 
       const resume = await Resume.create({
         user: req.user.userId,

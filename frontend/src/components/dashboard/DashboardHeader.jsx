@@ -23,7 +23,7 @@ function DashboardHeader() {
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between gap-6 border-b border-white/[0.08] bg-[#030712]/80 px-6 py-4 backdrop-blur-xl lg:px-10">
       {/* SEARCH BAR */}
-      <div className="hidden md:flex w-full max-w-sm items-center gap-2.5 rounded-xl border border-white/10 bg-slate-900/60 px-3.5 py-2 text-sm backdrop-blur-md transition-all focus-within:border-violet-500/50 focus-within:ring-2 focus-within:ring-violet-500/10">
+      <div className="hidden md:flex w-full max-w-sm items-center gap-2.5 rounded-xl border border-white/10 bg-slate-900/60 px-3.5 py-2 text-sm backdrop-blur-md transition-all focus-within:border-amber-500/50 focus-within:ring-2 focus-within:ring-amber-500/10">
         <Search className="h-4 w-4 text-slate-500" />
         <input
           type="text"
@@ -45,14 +45,14 @@ function DashboardHeader() {
             className="relative flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-slate-900/60 text-slate-400 hover:border-white/20 hover:text-white transition-all"
           >
             <Bell className="h-4 w-4" />
-            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-violet-500 ring-2 ring-[#030712]" />
+            <span className="absolute right-2 top-2 h-2 w-2 rounded-full bg-amber-500 ring-2 ring-[#030712]" />
           </button>
 
           {notificationsOpen && (
             <div className="absolute right-0 mt-3 w-80 rounded-2xl border border-white/10 bg-slate-900/95 p-4 shadow-2xl backdrop-blur-2xl z-50">
               <div className="flex items-center justify-between border-b border-white/10 pb-3 mb-3">
                 <span className="font-semibold text-xs text-white uppercase tracking-wider">Notifications</span>
-                <span className="text-[10px] text-violet-400">2 New</span>
+                <span className="text-[10px] text-amber-400">2 New</span>
               </div>
               <div className="space-y-2.5 text-xs">
                 <div className="rounded-xl bg-white/[0.04] p-2.5">
@@ -73,11 +73,11 @@ function DashboardHeader() {
           to="/settings"
           className="flex items-center gap-3 rounded-xl border border-white/10 bg-slate-900/60 p-1.5 pr-3 hover:border-white/20 transition-all group"
         >
-          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-violet-600 to-indigo-600 font-bold text-white text-xs shadow-md">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-amber-600 to-orange-600 font-bold text-white text-xs shadow-md">
             {userInitial}
           </div>
           <div className="hidden sm:block text-left">
-            <p className="text-xs font-semibold text-slate-200 group-hover:text-violet-300 transition-colors">{userName}</p>
+            <p className="text-xs font-semibold text-slate-200 group-hover:text-amber-300 transition-colors">{userName}</p>
             <p className="text-[10px] text-slate-500">{user?.email || "Candidate Pro"}</p>
           </div>
           <ChevronDown className="hidden sm:block h-3.5 w-3.5 text-slate-500" />

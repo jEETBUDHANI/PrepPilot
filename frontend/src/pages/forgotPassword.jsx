@@ -21,7 +21,7 @@ function ForgotPassword() {
 
   return (
     <main className="min-h-screen bg-[#030712] text-slate-100 flex items-center justify-center p-4 sm:p-6 relative overflow-hidden">
-      <div className="glow-orb-violet top-20 left-1/2 -translate-x-1/2 h-80 w-80 opacity-25 pointer-events-none" />
+      <div className="glow-orb-amber top-20 left-1/2 -translate-x-1/2 h-80 w-80 opacity-25 pointer-events-none" />
 
       <div className="w-full max-w-md rounded-3xl border border-white/[0.08] bg-[#080d1a]/80 backdrop-blur-2xl shadow-2xl p-8 sm:p-10 relative z-10">
         {!submitted ? (
@@ -35,7 +35,7 @@ function ForgotPassword() {
             </Link>
 
             <div className="mt-8 text-left">
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-violet-600/20 text-violet-400 border border-violet-500/20 mb-6">
+              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-amber-600/20 text-amber-400 border border-amber-500/20 mb-6">
                 <Mail className="h-6 w-6" />
               </div>
               <h1 className="text-2xl font-bold tracking-tight text-white">Reset password</h1>

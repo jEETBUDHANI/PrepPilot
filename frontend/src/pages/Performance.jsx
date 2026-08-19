@@ -110,7 +110,7 @@ function Performance() {
             </p>
             <Link
               to="/interview/setup"
-              className="mt-6 inline-flex rounded-xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white hover:bg-violet-500 transition-colors shadow-lg shadow-violet-600/30"
+              className="mt-6 inline-flex rounded-xl bg-amber-600 px-6 py-3 text-sm font-semibold text-white hover:bg-amber-500 transition-colors shadow-lg shadow-amber-600/30"
             >
               Start Interview Now
             </Link>
@@ -131,7 +131,7 @@ function Performance() {
           <Card variant="default" className="p-6">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Mock Sessions</span>
-              <Brain className="h-4 w-4 text-violet-400" />
+              <Brain className="h-4 w-4 text-amber-400" />
             </div>
             <p className="mt-3 text-3xl font-extrabold text-white">{totalInterviews}</p>
             <p className="mt-1 text-xs text-slate-400 font-medium">Completed interviews</p>
@@ -183,7 +183,7 @@ function Performance() {
                       <span className="text-[10px] font-mono text-slate-400">{item.score}</span>
                       <div className="flex h-40 w-full items-end rounded-t-lg bg-white/5 p-1">
                         <div
-                          className="w-full rounded-t-md bg-gradient-to-t from-violet-600 to-cyan-400 transition-all hover:brightness-125"
+                          className="w-full rounded-t-md bg-gradient-to-t from-amber-600 to-cyan-400 transition-all hover:brightness-125"
                           style={{ height: `${item.score}%` }}
                         />
                       </div>
@@ -202,13 +202,13 @@ function Performance() {
           {/* READINESS GAUGE */}
           <Card variant="gradient" className="p-6 flex flex-col justify-between">
             <div>
-              <div className="flex items-center gap-2 text-violet-300 font-medium text-xs">
+              <div className="flex items-center gap-2 text-amber-300 font-medium text-xs">
                 <Target className="h-4 w-4" />
                 <span>Interview Readiness Index</span>
               </div>
 
               <div className="mt-8 text-center">
-                <div className="mx-auto flex h-36 w-36 items-center justify-center rounded-full border-8 border-violet-500/20 bg-slate-950/60 shadow-xl">
+                <div className="mx-auto flex h-36 w-36 items-center justify-center rounded-full border-8 border-amber-500/20 bg-slate-950/60 shadow-xl">
                   <div>
                     <span className="text-4xl font-extrabold text-white">{avgScore}%</span>
                     <p className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Readiness</p>
@@ -223,7 +223,7 @@ function Performance() {
                 <span className="font-semibold text-emerald-400">Offer Ready</span>
               </div>
               <div className="h-2 rounded-full bg-white/10 overflow-hidden">
-                <div className="h-full rounded-full bg-gradient-to-r from-violet-600 to-emerald-400" style={{ width: `${avgScore}%` }} />
+                <div className="h-full rounded-full bg-gradient-to-r from-amber-600 to-emerald-400" style={{ width: `${avgScore}%` }} />
               </div>
             </div>
           </Card>
@@ -244,7 +244,7 @@ function Performance() {
                 </div>
                 <div className="h-2 rounded-full bg-white/10 overflow-hidden">
                   <div
-                    className="h-full rounded-full bg-gradient-to-r from-violet-600 to-cyan-400"
+                    className="h-full rounded-full bg-gradient-to-r from-amber-600 to-cyan-400"
                     style={{ width: `${skill.score}%` }}
                   />
                 </div>

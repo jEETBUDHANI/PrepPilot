@@ -13,21 +13,21 @@ function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/[0.08] bg-[#030712]/80 backdrop-blur-xl transition-all">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-xl transition-all">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
         {/* LOGO */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 via-indigo-600 to-cyan-500 font-bold text-white shadow-lg shadow-violet-600/30 transition-transform duration-300 group-hover:scale-105">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#0284C7] via-sky-500 to-[#F97316] font-bold text-white shadow-lg shadow-sky-200 transition-transform duration-300 group-hover:scale-105">
             <Sparkles className="h-5 w-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold tracking-tight text-white text-lg">PrepPilot</span>
-              <span className="rounded-full bg-violet-500/10 px-2 py-0.5 text-[10px] font-semibold text-violet-400 border border-violet-500/20">
+              <span className="font-bold tracking-tight text-[#0F172A] text-lg">HireFlux</span>
+              <span className="rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-semibold text-sky-700 border border-sky-200">
                 PRO
               </span>
             </div>
-            <p className="text-[10px] uppercase tracking-[2px] text-slate-400 font-medium">
+            <p className="text-[10px] uppercase tracking-[2px] text-slate-500 font-medium">
               AI Interview SaaS
             </p>
           </div>
@@ -39,7 +39,7 @@ function Navbar() {
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-slate-300 transition-colors hover:text-white"
+              className="text-sm font-medium text-slate-600 transition-colors hover:text-[#0284C7]"
             >
               {link.name}
             </a>

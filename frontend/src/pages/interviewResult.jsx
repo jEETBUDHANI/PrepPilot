@@ -64,7 +64,7 @@ function InterviewResult() {
     return (
       <main className="flex min-h-screen items-center justify-center bg-[#030712] text-slate-100">
         <div className="text-center space-y-4">
-          <Loader2 className="h-10 w-10 animate-spin text-violet-400 mx-auto" />
+          <Loader2 className="h-10 w-10 animate-spin text-amber-400 mx-auto" />
           <h2 className="text-xl font-bold text-white">AI Engine Evaluating Session...</h2>
           <p className="text-xs text-slate-400">Analyzing answer structures, key concepts, and technical accuracy.</p>
         </div>
@@ -112,7 +112,7 @@ function InterviewResult() {
           </Link>
 
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 font-bold text-white shadow-md shadow-violet-600/30">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-orange-600 font-bold text-white shadow-md shadow-amber-600/30">
               <Sparkles className="h-4 w-4" />
             </div>
             <span className="font-bold text-white text-sm">Evaluation Report</span>
@@ -162,7 +162,7 @@ function InterviewResult() {
             </div>
 
             {/* CIRCULAR PROGRESS GAUGE */}
-            <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-8 border-violet-500/20 bg-slate-950/60 shadow-xl">
+            <div className="relative flex h-36 w-36 items-center justify-center rounded-full border-8 border-amber-500/20 bg-slate-950/60 shadow-xl">
               <div className="text-center">
                 <span className="text-3xl font-extrabold text-white">{score}%</span>
                 <p className="text-[10px] text-slate-400 uppercase tracking-wider mt-0.5">Readiness</p>
@@ -221,9 +221,9 @@ function InterviewResult() {
         </div>
 
         {/* AI INTERVIEWER FEEDBACK NARRATIVE */}
-        <Card variant="default" className="p-6 border-violet-500/20 bg-violet-500/[0.02]">
+        <Card variant="default" className="p-6 border-amber-500/20 bg-amber-500/[0.02]">
           <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600/15 text-violet-400 border border-violet-500/20">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-600/15 text-amber-400 border border-amber-500/20">
               <MessageSquareText className="h-5 w-5" />
             </div>
             <div>
@@ -250,11 +250,11 @@ function InterviewResult() {
               <Card key={item.questionId || index} variant="default" className="p-6">
                 <div className="flex items-start justify-between gap-4">
                   <div>
-                    <span className="text-xs font-semibold text-violet-400">Question {index + 1}</span>
+                    <span className="text-xs font-semibold text-amber-400">Question {index + 1}</span>
                     <h4 className="mt-1 font-semibold text-white text-base">{item.question || `Question ${item.questionId}`}</h4>
                   </div>
                   <div className="text-right shrink-0">
-                    <span className="text-2xl font-bold text-violet-400">{item.score}</span>
+                    <span className="text-2xl font-bold text-amber-400">{item.score}</span>
                     <span className="text-xs text-slate-500"> / 100</span>
                   </div>
                 </div>

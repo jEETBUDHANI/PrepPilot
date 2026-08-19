@@ -66,8 +66,8 @@ function Dashboard() {
 
         <main className="flex-1 px-6 py-8 lg:px-10 max-w-7xl w-full mx-auto space-y-8">
           {/* WELCOME BANNER */}
-          <section className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-r from-violet-950/40 via-slate-900/80 to-cyan-950/30 p-8 backdrop-blur-2xl">
-            <div className="glow-orb-violet -right-20 -top-20 h-64 w-64 opacity-30 pointer-events-none" />
+          <section className="relative overflow-hidden rounded-3xl border border-white/[0.08] bg-gradient-to-r from-amber-950/40 via-slate-900/80 to-cyan-950/30 p-8 backdrop-blur-2xl">
+            <div className="glow-orb-amber -right-20 -top-20 h-64 w-64 opacity-30 pointer-events-none" />
             <div className="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-6">
               <div>
                 <Badge variant="purple" size="sm" dot icon={Sparkles}>
@@ -135,7 +135,7 @@ function Dashboard() {
                     variant="ghost"
                     size="sm"
                     onClick={() => navigate("/history")}
-                    className="text-violet-400 hover:text-violet-300"
+                    className="text-amber-400 hover:text-amber-300"
                   >
                     View History →
                   </Button>
@@ -146,10 +146,10 @@ function Dashboard() {
                     recentSessions.map((session) => (
                       <div
                         key={session._id || session.id}
-                        className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-slate-900/60 p-4 backdrop-blur-md transition-all hover:border-violet-500/30 hover:bg-slate-900/90"
+                        className="flex items-center justify-between rounded-2xl border border-white/[0.06] bg-slate-900/60 p-4 backdrop-blur-md transition-all hover:border-amber-500/30 hover:bg-slate-900/90"
                       >
                         <div className="flex items-center gap-4">
-                          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-600/15 text-violet-400 border border-violet-500/20">
+                          <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-600/15 text-amber-400 border border-amber-500/20">
                             <Video className="h-5 w-5" />
                           </div>
                           <div>
@@ -175,14 +175,14 @@ function Dashboard() {
 
               <div className="mt-6 pt-4 border-t border-white/[0.06] flex items-center justify-between text-xs text-slate-400">
                 <span>{totalInterviews} sessions saved in database</span>
-                <span className="text-violet-400 font-semibold cursor-pointer" onClick={() => navigate("/interview/setup")}>+ New Mock</span>
+                <span className="text-amber-400 font-semibold cursor-pointer" onClick={() => navigate("/interview/setup")}>+ New Mock</span>
               </div>
             </Card>
 
             {/* AI RECOMMENDATION BOX */}
             <Card variant="gradient" className="p-6 flex flex-col justify-between">
               <div>
-                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-violet-600 to-cyan-500 font-bold text-white shadow-lg shadow-violet-600/30">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-gradient-to-br from-amber-600 to-cyan-500 font-bold text-white shadow-lg shadow-amber-600/30">
                   <Sparkles className="h-6 w-6" />
                 </div>
                 <h2 className="mt-6 text-xl font-bold text-white">AI Coach Recommendation</h2>
@@ -215,7 +215,7 @@ function Dashboard() {
                 className="p-5 flex items-center justify-between group"
               >
                 <div className="flex items-center gap-3.5">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-600/15 text-violet-400 border border-violet-500/20">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-amber-600/15 text-amber-400 border border-amber-500/20">
                     <Play className="h-5 w-5" />
                   </div>
                   <div>
@@ -223,7 +223,7 @@ function Dashboard() {
                     <p className="text-xs text-slate-400">Launch AI mock session</p>
                   </div>
                 </div>
-                <ArrowRight className="h-4 w-4 text-slate-500 transition-transform group-hover:translate-x-1 group-hover:text-violet-400" />
+                <ArrowRight className="h-4 w-4 text-slate-500 transition-transform group-hover:translate-x-1 group-hover:text-amber-400" />
               </Card>
 
               <Card

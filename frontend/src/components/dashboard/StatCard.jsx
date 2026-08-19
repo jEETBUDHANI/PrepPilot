@@ -9,7 +9,7 @@ const iconMap = {
 };
 
 const colorMap = {
-  interviews: "from-violet-500/20 to-purple-500/10 text-violet-400 border-violet-500/20",
+  interviews: "from-amber-500/20 to-purple-500/10 text-amber-400 border-amber-500/20",
   score: "from-cyan-500/20 to-blue-500/10 text-cyan-400 border-cyan-500/20",
   hours: "from-amber-500/20 to-orange-500/10 text-amber-400 border-amber-500/20",
   progress: "from-emerald-500/20 to-teal-500/10 text-emerald-400 border-emerald-500/20",

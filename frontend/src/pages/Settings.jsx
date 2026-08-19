@@ -83,7 +83,7 @@ function Settings() {
           </Link>
 
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 font-bold text-white shadow-md">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-orange-600 font-bold text-white shadow-md">
               <Sparkles className="h-4 w-4" />
             </div>
             <span className="font-bold text-white text-sm">Account Preferences</span>
@@ -111,7 +111,7 @@ function Settings() {
         {/* PROFILE SECTION */}
         <Card variant="default" className="p-6">
           <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-600/15 text-violet-400 border border-violet-500/20">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-600/15 text-amber-400 border border-amber-500/20">
               <User className="h-5 w-5" />
             </div>
             <div>
@@ -187,7 +187,7 @@ function Settings() {
                 type="button"
                 onClick={() => setNotifications(!notifications)}
                 className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
-                  notifications ? "bg-violet-600" : "bg-slate-800"
+                  notifications ? "bg-amber-600" : "bg-slate-800"
                 }`}
               >
                 <span
@@ -208,7 +208,7 @@ function Settings() {
                 type="button"
                 onClick={() => setWeeklyReport(!weeklyReport)}
                 className={`relative h-6 w-11 shrink-0 rounded-full transition-colors ${
-                  weeklyReport ? "bg-violet-600" : "bg-slate-800"
+                  weeklyReport ? "bg-amber-600" : "bg-slate-800"
                 }`}
               >
                 <span

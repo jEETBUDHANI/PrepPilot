@@ -74,7 +74,7 @@ function InterviewSetup() {
   return (
     <main className="min-h-screen bg-[#030712] text-slate-100 relative overflow-hidden pb-20">
       {/* Background Orbs */}
-      <div className="glow-orb-violet top-0 left-1/2 -translate-x-1/2 h-96 w-96 opacity-25 pointer-events-none" />
+      <div className="glow-orb-amber top-0 left-1/2 -translate-x-1/2 h-96 w-96 opacity-25 pointer-events-none" />
 
       {/* HEADER */}
       <header className="border-b border-white/[0.08] bg-[#030712]/80 backdrop-blur-xl">
@@ -88,7 +88,7 @@ function InterviewSetup() {
           </Link>
 
           <div className="flex items-center gap-2.5">
-            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-violet-600 to-indigo-600 font-bold text-white shadow-md shadow-violet-600/30">
+            <div className="flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br from-amber-600 to-orange-600 font-bold text-white shadow-md shadow-amber-600/30">
               <Sparkles className="h-4 w-4" />
             </div>
             <span className="font-bold text-white text-sm">Interview Simulator Setup</span>
@@ -117,7 +117,7 @@ function InterviewSetup() {
           {/* ROLE SELECTOR */}
           <div className="space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-violet-600/20 text-violet-400 border border-violet-500/20">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-amber-600/20 text-amber-400 border border-amber-500/20">
                 <Briefcase className="h-4 w-4" />
               </div>
               <h2 className="text-base font-bold text-white">1. Select Target Job Role</h2>
@@ -132,13 +132,13 @@ function InterviewSetup() {
                     onClick={() => handleChange("role", r.title)}
                     className={`cursor-pointer rounded-2xl border p-4 backdrop-blur-xl transition-all ${
                       isSelected
-                        ? "border-violet-500/60 bg-violet-600/15 shadow-lg shadow-violet-600/15"
+                        ? "border-amber-500/60 bg-amber-600/15 shadow-lg shadow-amber-600/15"
                         : "border-white/[0.08] bg-slate-900/50 hover:border-white/20 hover:bg-slate-900/80"
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <p className="font-semibold text-sm text-white">{r.title}</p>
-                      {isSelected && <CheckCircle2 className="h-4 w-4 text-violet-400" />}
+                      {isSelected && <CheckCircle2 className="h-4 w-4 text-amber-400" />}
                     </div>
                     <p className="mt-1.5 text-xs text-slate-400">{r.desc}</p>
                   </div>
@@ -165,13 +165,13 @@ function InterviewSetup() {
                     onClick={() => handleChange("difficulty", d.title)}
                     className={`cursor-pointer rounded-2xl border p-4 backdrop-blur-xl transition-all ${
                       isSelected
-                        ? "border-violet-500/60 bg-violet-600/15 shadow-lg shadow-violet-600/15"
+                        ? "border-amber-500/60 bg-amber-600/15 shadow-lg shadow-amber-600/15"
                         : "border-white/[0.08] bg-slate-900/50 hover:border-white/20 hover:bg-slate-900/80"
                     }`}
                   >
                     <div className="flex items-center justify-between">
                       <span className="font-semibold text-sm text-white">{d.title}</span>
-                      {isSelected && <CheckCircle2 className="h-4 w-4 text-violet-400" />}
+                      {isSelected && <CheckCircle2 className="h-4 w-4 text-amber-400" />}
                     </div>
                     <p className="mt-1.5 text-xs text-slate-400">{d.desc}</p>
                   </div>
@@ -201,7 +201,7 @@ function InterviewSetup() {
                       onClick={() => handleChange("experience", exp)}
                       className={`rounded-xl border py-2.5 px-3 text-xs font-semibold transition-all ${
                         isSelected
-                          ? "border-violet-500/60 bg-violet-600/20 text-white"
+                          ? "border-amber-500/60 bg-amber-600/20 text-white"
                           : "border-white/[0.08] bg-slate-900/50 text-slate-400 hover:text-white"
                       }`}
                     >
@@ -231,7 +231,7 @@ function InterviewSetup() {
                       onClick={() => handleChange("questions", qc)}
                       className={`rounded-xl border py-2.5 px-3 text-xs font-semibold transition-all ${
                         isSelected
-                          ? "border-violet-500/60 bg-violet-600/20 text-white"
+                          ? "border-amber-500/60 bg-amber-600/20 text-white"
                           : "border-white/[0.08] bg-slate-900/50 text-slate-400 hover:text-white"
                       }`}
                     >

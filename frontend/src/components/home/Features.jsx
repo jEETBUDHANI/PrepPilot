@@ -46,7 +46,7 @@ function Features() {
     <section className="rounded-3xl bg-slate-950 px-6 py-28 text-white sm:px-10">
       <Container>
         <div className="text-center">
-          <p className="text-violet-400 uppercase tracking-[0.3em]">FEATURES</p>
+          <p className="text-amber-400 uppercase tracking-[0.3em]">FEATURES</p>
           <h2 className="mt-5 text-4xl font-bold sm:text-5xl">Everything You Need</h2>
           <p className="mt-6 text-gray-400 max-w-2xl mx-auto">
             One platform to practice interviews, analyze resumes and improve
@@ -59,9 +59,9 @@ function Features() {
             return (
               <div
                 key={feature.title}
-                className="rounded-3xl border border-white/10 bg-white/5 p-8 transition-all duration-300 hover:-translate-y-2 hover:border-violet-500"
+                className="rounded-3xl border border-white/10 bg-white/5 p-8 transition-all duration-300 hover:-translate-y-2 hover:border-amber-500"
               >
-                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-violet-600">
+                <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-amber-600">
                   <Icon className="h-6 w-6 text-white" />
                 </div>
                 <h3 className="mt-8 text-2xl font-semibold">{feature.title}</h3>
