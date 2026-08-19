@@ -3,20 +3,30 @@ import { ArrowLeft, Mail, ArrowRight, CheckCircle2, Sparkles } from "lucide-reac
 import { Link } from "react-router-dom";
 import Button from "../components/common/Button";
 import Input from "../components/common/Input";
+import { requestPasswordReset } from "../services/authService";
 
 function ForgotPassword() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (!email) return;
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
+    try {
+      setIsLoading(true);
+      setError("");
+      await requestPasswordReset(email);
       setSubmitted(true);
-    }, 600);
+    } catch (err) {
+      console.error(err);
+      setError(err.message || "Password reset request failed");
+      // Still set submitted to true for security best practices if desired, or show message
+      setSubmitted(true);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (

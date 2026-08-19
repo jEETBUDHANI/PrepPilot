@@ -15,10 +15,20 @@ import { analyzeResume as analyzeResumeService, getLatestResume } from "../servi
 
 function ResumeAnalyzer() {
   const [file, setFile] = useState(null);
+  const [targetRole, setTargetRole] = useState("Full Stack Developer");
   const [analyzing, setAnalyzing] = useState(false);
   const [analyzed, setAnalyzed] = useState(false);
   const [analysis, setAnalysis] = useState(null);
   const [error, setError] = useState("");
+
+  const roles = [
+    "Full Stack Developer",
+    "Frontend Developer",
+    "React Developer",
+    "Backend Developer (Node.js)",
+    "JavaScript Engineer",
+    "Software Engineer",
+  ];
 
   useEffect(() => {
     async function loadLatestResume() {
@@ -59,7 +69,7 @@ function ResumeAnalyzer() {
     try {
       setAnalyzing(true);
       setError("");
-      const data = await analyzeResumeService(file);
+      const data = await analyzeResumeService(file, targetRole);
       setAnalysis(data.resume);
       setAnalyzed(true);
     } catch (err) {
@@ -164,19 +174,38 @@ function ResumeAnalyzer() {
                   </button>
                 </div>
 
-                <div className="mt-8 border-t border-white/10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <p className="text-xs text-slate-400">PDF text will be parsed by backend AI for ATS analysis.</p>
-                  <Button
-                    variant="glow"
-                    size="lg"
-                    onClick={handleAnalyzeResume}
-                    isLoading={analyzing}
-                    disabled={analyzing}
-                    className="w-full sm:w-auto"
-                  >
-                    <Sparkles className="h-4 w-4" />
-                    Analyze Resume
-                  </Button>
+                <div className="mt-6 border-t border-white/10 pt-6 space-y-4">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    <label className="text-xs font-semibold text-slate-300">
+                      Target Role for ATS Optimization:
+                    </label>
+                    <select
+                      value={targetRole}
+                      onChange={(e) => setTargetRole(e.target.value)}
+                      className="rounded-xl border border-white/15 bg-slate-900/90 px-4 py-2 text-xs font-medium text-amber-400 focus:border-amber-500 focus:outline-none"
+                    >
+                      {roles.map((r) => (
+                        <option key={r} value={r} className="bg-slate-900 text-slate-100">
+                          {r}
+                        </option>
+                      ))}
+                    </select>
+                  </div>
+
+                  <div className="flex flex-col sm:flex-row items-center justify-between gap-4 pt-2 border-t border-white/5">
+                    <p className="text-xs text-slate-400">Target role: <span className="text-amber-400 font-semibold">{targetRole}</span></p>
+                    <Button
+                      variant="glow"
+                      size="lg"
+                      onClick={handleAnalyzeResume}
+                      isLoading={analyzing}
+                      disabled={analyzing}
+                      className="w-full sm:w-auto"
+                    >
+                      <Sparkles className="h-4 w-4" />
+                      Analyze Resume for {targetRole}
+                    </Button>
+                  </div>
                 </div>
               </Card>
             )}

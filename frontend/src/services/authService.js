@@ -75,6 +75,24 @@ export async function updateProfile(profileData) {
   return data;
 }
 
+export async function requestPasswordReset(email) {
+  const response = await fetch(`${API_URL}/auth/forgot-password`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ email }),
+  });
+
+  const data = await response.json();
+
+  if (!response.ok) {
+    throw new Error(data.message || "Failed to request password reset");
+  }
+
+  return data;
+}
+
 export function logoutUser() {
   localStorage.removeItem("token");
   localStorage.removeItem("user");

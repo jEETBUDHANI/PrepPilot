@@ -1,10 +1,11 @@
 const API_URL = "http://localhost:5000/api";
 
-export async function analyzeResume(file) {
+export async function analyzeResume(file, role = "Full Stack Developer") {
   const token = localStorage.getItem("token");
 
   const formData = new FormData();
   formData.append("resume", file);
+  formData.append("role", role);
 
   const response = await fetch(`${API_URL}/resume/analyze`, {
     method: "POST",

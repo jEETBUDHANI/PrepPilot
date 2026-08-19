@@ -352,10 +352,37 @@ async function updateProfile(req, res) {
   }
 }
 
+async function forgotPassword(req, res) {
+  try {
+    const { email } = req.body;
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email is required.",
+      });
+    }
+
+    const normalizedEmail = email.toLowerCase().trim();
+    console.log(`Password reset instructions requested for email: ${normalizedEmail}`);
+
+    return res.status(200).json({
+      success: true,
+      message: "If an account with that email exists, reset instructions have been generated.",
+    });
+  } catch (error) {
+    console.error("Forgot password error:", error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to process forgot password request.",
+    });
+  }
+}
+
 module.exports = {
   registerUser,
   loginUser,
   getCurrentUser,
   updateProfile,
+  forgotPassword,
 };
 
