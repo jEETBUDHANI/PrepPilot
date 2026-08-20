@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 function DashboardHeader() {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [user, setUser] = useState(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedUser = localStorage.getItem("user");
@@ -17,23 +19,34 @@ function DashboardHeader() {
     }
   }, []);
 
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/history?search=${encodeURIComponent(searchQuery.trim())}`);
+    } else {
+      navigate("/history");
+    }
+  };
+
   const userName = user?.name || "User";
   const userInitial = userName.charAt(0).toUpperCase();
 
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between gap-6 border-b border-white/[0.08] bg-[#030712]/80 px-6 py-4 backdrop-blur-xl lg:px-10">
       {/* SEARCH BAR */}
-      <div className="hidden md:flex w-full max-w-sm items-center gap-2.5 rounded-xl border border-white/10 bg-slate-900/60 px-3.5 py-2 text-sm backdrop-blur-md transition-all focus-within:border-amber-500/50 focus-within:ring-2 focus-within:ring-amber-500/10">
-        <Search className="h-4 w-4 text-slate-500" />
+      <form onSubmit={handleSearchSubmit} className="hidden md:flex w-full max-w-sm items-center gap-2.5 rounded-xl border border-white/10 bg-slate-900/60 px-3.5 py-2 text-sm backdrop-blur-md transition-all focus-within:border-amber-500/50 focus-within:ring-2 focus-within:ring-amber-500/10">
+        <Search className="h-4 w-4 text-slate-500 shrink-0" />
         <input
           type="text"
+          value={searchQuery}
+          onChange={(e) => setSearchQuery(e.target.value)}
           placeholder="Search interviews, topics, history..."
           className="w-full bg-transparent text-slate-200 outline-none placeholder:text-slate-500 text-xs sm:text-sm"
         />
-        <kbd className="hidden sm:inline-flex items-center rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] text-slate-400 font-mono">
-          ⌘K
-        </kbd>
-      </div>
+        <button type="submit" className="hidden sm:inline-flex items-center rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] text-slate-400 font-mono hover:text-amber-400 transition-colors">
+          Search
+        </button>
+      </form>
 
       {/* RIGHT ACTIONS */}
       <div className="ml-auto flex items-center gap-4">

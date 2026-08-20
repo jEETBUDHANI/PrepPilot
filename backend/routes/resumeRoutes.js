@@ -1,12 +1,32 @@
 const express = require("express");
 const multer = require("multer");
-const pdfParse = require("pdf-parse");
+const pdfParseModule = require("pdf-parse");
 
 const protect = require("../middleware/authMiddleware");
 const Resume = require("../models/Resume");
 const { analyzeResume } = require("../services/aiService");
 
 const router = express.Router();
+
+// Helper function to handle text extraction across different pdf-parse module exports (v1.x vs v2.x)
+async function extractPdfText(buffer) {
+  if (typeof pdfParseModule === "function") {
+    const pdfData = await pdfParseModule(buffer);
+    return pdfData.text;
+  } else if (pdfParseModule && typeof pdfParseModule.PDFParse === "function") {
+    const parser = new pdfParseModule.PDFParse({ data: buffer });
+    const pdfData = await parser.getText();
+    if (typeof parser.destroy === "function") {
+      await parser.destroy();
+    }
+    return pdfData.text;
+  } else if (pdfParseModule && typeof pdfParseModule.default === "function") {
+    const pdfData = await pdfParseModule.default(buffer);
+    return pdfData.text;
+  } else {
+    throw new Error("PDF parser module is not recognized as a function or class");
+  }
+}
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -37,8 +57,7 @@ router.post(
         });
       }
 
-      const pdfData = await pdfParse(req.file.buffer);
-      const resumeText = pdfData.text;
+      const resumeText = await extractPdfText(req.file.buffer);
 
       if (!resumeText || !resumeText.trim()) {
         return res.status(400).json({

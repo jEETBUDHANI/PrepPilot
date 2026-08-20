@@ -50,10 +50,56 @@ function Interview() {
   const totalQuestions = interview.questions.length;
   const progress = ((currentQuestion + 1) / totalQuestions) * 100;
 
+  const [recognitionInstance, setRecognitionInstance] = useState(null);
+
   function toggleRecording() {
-    setIsRecording(!isRecording);
-    if (!isRecording && !answer) {
-      setAnswer("In React, concurrent rendering allows React to interrupt a long rendering task to respond to high-priority events like user inputs...");
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    if (!SpeechRecognition) {
+      alert("Voice recognition is not supported in this browser. Please type your answer directly.");
+      return;
+    }
+
+    if (isRecording && recognitionInstance) {
+      recognitionInstance.stop();
+      setIsRecording(false);
+      return;
+    }
+
+    try {
+      const recognition = new SpeechRecognition();
+      recognition.continuous = true;
+      recognition.interimResults = true;
+      recognition.lang = "en-US";
+
+      recognition.onstart = () => {
+        setIsRecording(true);
+      };
+
+      recognition.onresult = (event) => {
+        let transcript = "";
+        for (let i = event.resultIndex; i < event.results.length; i++) {
+          transcript += event.results[i][0].transcript;
+        }
+        if (transcript.trim()) {
+          setAnswer((prev) => (prev ? prev + " " + transcript : transcript));
+        }
+      };
+
+      recognition.onerror = (event) => {
+        console.error("Speech recognition error:", event.error);
+        setIsRecording(false);
+      };
+
+      recognition.onend = () => {
+        setIsRecording(false);
+      };
+
+      recognition.start();
+      setRecognitionInstance(recognition);
+    } catch (e) {
+      console.error("Speech recognition startup error:", e);
+      setIsRecording(false);
     }
   }
 

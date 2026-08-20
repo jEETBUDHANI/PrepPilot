@@ -9,7 +9,7 @@ import {
   Video,
   Loader2,
 } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useSearchParams, Link } from "react-router-dom";
 import Button from "../components/common/Button";
 import Card from "../components/common/Card";
 import Badge from "../components/common/Badge";
@@ -17,9 +17,10 @@ import Input from "../components/common/Input";
 import { getInterviews } from "../services/interviewService";
 
 function InterviewHistory() {
+  const [searchParams, setSearchParams] = useSearchParams();
   const [interviews, setInterviews] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [search, setSearch] = useState("");
+  const [search, setSearch] = useState(searchParams.get("search") || "");
   const [filter, setFilter] = useState("All");
 
   useEffect(() => {
@@ -37,11 +38,32 @@ function InterviewHistory() {
     loadInterviews();
   }, []);
 
+  const handleSearchChange = (val) => {
+    setSearch(val);
+    if (val) {
+      setSearchParams({ search: val });
+    } else {
+      setSearchParams({});
+    }
+  };
+
   const filteredInterviews = interviews.filter((interview) => {
-    const matchesSearch = interview.role
-      ? interview.role.toLowerCase().includes(search.toLowerCase())
-      : true;
-    const matchesFilter = filter === "All" || interview.type === filter;
+    const query = search.toLowerCase().trim();
+    const roleText = (interview.role || "").toLowerCase();
+    const diffText = (interview.difficulty || "").toLowerCase();
+    const questionsText = (interview.questions || []).map((q) => q.question || "").join(" ").toLowerCase();
+
+    const matchesSearch = !query || roleText.includes(query) || diffText.includes(query) || questionsText.includes(query);
+
+    let matchesFilter = true;
+    if (filter === "Frontend") {
+      matchesFilter = roleText.includes("frontend") || roleText.includes("react");
+    } else if (filter === "Full Stack") {
+      matchesFilter = roleText.includes("full stack") || roleText.includes("javascript") || roleText.includes("node");
+    } else if (filter === "Medium / Hard") {
+      matchesFilter = diffText.includes("medium") || diffText.includes("hard");
+    }
+
     return matchesSearch && matchesFilter;
   });
 
@@ -124,15 +146,15 @@ function InterviewHistory() {
           <Input
             type="text"
             value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            placeholder="Search by role or technology..."
+            onChange={(e) => handleSearchChange(e.target.value)}
+            placeholder="Search by role, difficulty, or question..."
             icon={Search}
             containerClassName="max-w-md"
           />
 
           <div className="flex items-center gap-2">
             <Filter className="h-4 w-4 text-slate-500" />
-            {["All", "Technical", "Behavioral"].map((item) => (
+            {["All", "Frontend", "Full Stack", "Medium / Hard"].map((item) => (
               <button
                 key={item}
                 type="button"

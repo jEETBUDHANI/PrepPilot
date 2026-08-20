@@ -78,43 +78,102 @@ function generateFallbackQuestions(role, difficulty, count) {
   return questions;
 }
 
+// Role-aware keyword dictionary for realistic technical evaluation
+const ROLE_KEYWORDS = {
+  "Frontend Developer": ["react", "dom", "component", "state", "props", "hooks", "effect", "render", "flexbox", "grid", "css", "javascript", "async", "await", "promise", "performance", "bundle", "webpack", "vite", "vitals", "redux", "context"],
+  "React Developer": ["react", "component", "useeffect", "usestate", "usememo", "usecallback", "usecontext", "custom hook", "virtual dom", "reconciliation", "props", "batching", "concurrent", "redux", "jsx"],
+  "Full Stack Developer": ["node", "express", "mongodb", "rest", "api", "jwt", "auth", "database", "sql", "schema", "async", "promise", "middleware", "frontend", "backend", "crud", "http", "json"],
+  "JavaScript Developer": ["closure", "prototype", "event loop", "microtask", "macrotask", "bubbling", "delegation", "scope", "lexical", "hoisting", "map", "set", "promise", "async", "await", "es6"]
+};
+
 function generateFallbackEvaluation(role, difficulty, answers) {
+  const currentRoleKeywords = ROLE_KEYWORDS[role] || ["code", "system", "design", "development", "logic", "function", "api", "data", "test", "process"];
+
   const evaluatedAnswers = answers.map((item, idx) => {
-    const wordCount = item.answer ? item.answer.trim().split(/\s+/).length : 0;
-    const score = Math.min(95, Math.max(65, 70 + wordCount));
+    const rawAnswer = item.answer ? String(item.answer).trim() : "";
+    const words = rawAnswer.split(/\s+/).filter(Boolean);
+    const wordCount = rawAnswer ? words.length : 0;
+    const lowerAnswer = rawAnswer.toLowerCase();
+
+    // Gibberish, single-word & low quality detection
+    const isRepeatedChar = /^(.)\1+$/i.test(rawAnswer);
+    const isCommonGibberish = /^(asdf|qwerty|zxcv|1234|idk|no|yes|abc|test|anything|blah|n\/a|none)$/i.test(rawAnswer);
+    const isSingleWord = wordCount <= 1;
+
+    let score = 0;
+    let feedback = "";
+
+    if (!rawAnswer || isRepeatedChar || isCommonGibberish) {
+      score = Math.floor(Math.random() * 10); // 0-10
+      feedback = "No valid response provided. In a professional technical interview, you must articulate your thought process, implementation logic, and system trade-offs.";
+    } else if (isSingleWord || wordCount < 5) {
+      score = Math.floor(12 + Math.random() * 15); // 12-27
+      feedback = `Your response is far too brief (${wordCount} word${wordCount > 1 ? 's' : ''}). A ${difficulty}-level ${role} candidate must explain the core technical concepts and implementation details.`;
+    } else if (wordCount < 15) {
+      score = Math.floor(30 + Math.random() * 20); // 30-50
+      feedback = "Answer lacks technical depth. Try structuring your response with real-world examples, core principles, and edge case handling.";
+    } else {
+      // Analyze technical keyword density
+      let keywordHits = 0;
+      currentRoleKeywords.forEach(kw => {
+        if (lowerAnswer.includes(kw)) keywordHits++;
+      });
+
+      // Base score on length + technical keywords
+      const lengthScore = Math.min(65, 40 + Math.floor(wordCount / 2));
+      const keywordScore = Math.min(30, keywordHits * 7);
+      score = Math.min(98, lengthScore + keywordScore);
+
+      if (score >= 80) {
+        feedback = "Excellent response! Clear technical terminology, good structure, and relevant architectural considerations.";
+      } else if (score >= 60) {
+        feedback = "Solid answer. Good understanding of the basic concepts. To improve, discuss quantitative metrics and edge cases.";
+      } else {
+        feedback = "Reasonable start, but needs more specific technical detail and concrete examples related to " + role + ".";
+      }
+    }
 
     return {
       questionId: item.questionId || idx + 1,
       question: item.question,
       score,
-      feedback: wordCount > 20
-        ? "Good explanation with relevant technical terms. Could expand further on performance tradeoffs."
-        : "Answer is concise. Try using the STAR method and adding concrete technical examples.",
+      feedback,
     };
   });
 
-  const avgScore = Math.round(
-    evaluatedAnswers.reduce((sum, a) => sum + a.score, 0) / (evaluatedAnswers.length || 1)
-  );
+  const totalScoreSum = evaluatedAnswers.reduce((sum, a) => sum + a.score, 0);
+  const avgScore = Math.round(totalScoreSum / (evaluatedAnswers.length || 1));
+
+  // Determine dynamic strengths, weaknesses, and improvements based on performance
+  let overallFeedback = "";
+  let strengths = [];
+  let weaknesses = [];
+  let improvements = [];
+
+  if (avgScore < 30) {
+    overallFeedback = `The candidate's responses for this ${difficulty} ${role} interview were largely incomplete, single-word, or non-responsive. Significant preparation is needed across core technical topics.`;
+    strengths = ["Attempted the interview session"];
+    weaknesses = ["Incomplete or non-responsive answers", "Missing essential technical explanations", "Lacks detailed problem-solving approach"];
+    improvements = ["Review core fundamental concepts for " + role, "Practice answering using the STAR method (Situation, Task, Action, Result)", "Write comprehensive responses containing technical terminology and trade-offs"];
+  } else if (avgScore < 65) {
+    overallFeedback = `Fair attempt for a ${difficulty} ${role} role, but answers were brief or lacked technical depth. Focus on elaborating key concepts and explaining edge cases.`;
+    strengths = ["Identified basic concepts", "Understood general question scope"];
+    weaknesses = ["Answers lack detailed technical depth", "Limited discussion of trade-offs or performance", "Could expand more on real-world examples"];
+    improvements = ["Elaborate on technical implementation details", "Incorporate role-specific keywords and code examples", "Discuss error handling and performance optimization"];
+  } else {
+    overallFeedback = `Strong performance for a ${difficulty} ${role} interview! Technical fundamentals are sound with clear explanations and structured answers.`;
+    strengths = ["Clear use of relevant technical terminology", "Good structural flow and conceptual understanding", "Addressed question requirements effectively"];
+    weaknesses = ["Can include more quantitative impact metrics", "Opportunity to cover advance edge case handling"];
+    improvements = ["Mention real-world production metrics", "Detail architectural trade-offs in depth", "Practice whiteboard system design scenarios"];
+  }
 
   return {
     score: avgScore,
     overallScore: avgScore,
-    overallFeedback: `Solid overall performance for a ${difficulty} level ${role} interview session. Technical fundamentals are sound. Focus on structuring responses with clear architectural reasoning.`,
-    strengths: [
-      "Clear technical terminology",
-      "Good understanding of core principles",
-      "Relevant answers to role prompts",
-    ],
-    weaknesses: [
-      "Lacks deep quantitative metrics in responses",
-      "Could expand further on edge case handling",
-    ],
-    improvements: [
-      "Incorporate more quantitative project metrics",
-      "Explain error-handling edge cases",
-      "Use STAR framework for behavioral prompts",
-    ],
+    overallFeedback,
+    strengths,
+    weaknesses,
+    improvements,
     questionFeedback: evaluatedAnswers,
     answers: evaluatedAnswers,
   };
@@ -206,14 +265,18 @@ async function evaluateInterviewAnswers({ role, difficulty = "Medium", answers }
     .map((item, index) => `Question ${index + 1}: ${item.question}\nCandidate Answer: ${item.answer}`)
     .join("\n\n---\n\n");
 
-  const prompt = `You are an expert technical interviewer evaluating a candidate's interview session.
-Role: ${role}
-Difficulty: ${difficulty}
+  const prompt = `You are an expert, highly strict technical interviewer evaluating a candidate's interview session for a ${role} position (${difficulty} level).
+
+CRITICAL EVALUATION DIRECTIVES:
+1. If an answer is blank, gibberish (e.g. "asdf", "qwerty"), off-topic, or single-word ("no", "yes", "anything"), YOU MUST AWARD 0 TO 15 POINTS out of 100 for that question and mark it as a severe flaw in feedback.
+2. If an answer is extremely brief (< 15 words) or superficial, cap the score at 20 TO 45 points out of 100.
+3. Award high scores (80-100) ONLY for well-explained, technically accurate responses containing proper architectural concepts, syntax, or trade-offs.
+4. Calculate overallScore as the exact mathematical average of all question scores.
 
 Questions & Answers:
 ${answersText}
 
-Evaluate comprehensively. Return ONLY valid JSON in this exact structure:
+Return ONLY valid JSON in this exact structure:
 {
   "score": 85,
   "overallScore": 85,
@@ -239,7 +302,7 @@ Evaluate comprehensively. Return ONLY valid JSON in this exact structure:
         contents: prompt,
         config: {
           responseMimeType: "application/json",
-          temperature: 0.5,
+          temperature: 0.3,
         },
       });
 
@@ -264,7 +327,7 @@ Evaluate comprehensively. Return ONLY valid JSON in this exact structure:
           { role: "system", content: "You are an expert technical evaluator outputting valid JSON." },
           { role: "user", content: prompt },
         ],
-        temperature: 0.5,
+        temperature: 0.3,
       });
 
       const parsed = JSON.parse(completion.choices[0].message.content);
@@ -280,6 +343,73 @@ Evaluate comprehensively. Return ONLY valid JSON in this exact structure:
   // 3. Fallback
   console.log("Using local fallback evaluation generator (No API key configured).");
   return generateFallbackEvaluation(role, difficulty, answers);
+}
+
+function generateFallbackResumeAnalysis(resumeText, role = "Full Stack Developer") {
+  const text = resumeText ? String(resumeText).trim() : "";
+  const words = text.split(/\s+/).filter(Boolean);
+  const wordCount = words.length;
+  const lowerText = text.toLowerCase();
+
+  // Tech skills dictionary scan
+  const allTechSkills = [
+    "React", "Node.js", "JavaScript", "TypeScript", "Express", "MongoDB", "SQL",
+    "PostgreSQL", "HTML", "CSS", "TailwindCSS", "Redux", "REST API", "GraphQL",
+    "Git", "Docker", "AWS", "Python", "Java", "C++", "Next.js", "Vue", "Angular"
+  ];
+
+  const detectedSkills = allTechSkills.filter(skill => 
+    lowerText.includes(skill.toLowerCase())
+  );
+
+  // Section header detection
+  const hasExp = /experience|work|employment|job|history/i.test(lowerText);
+  const hasEdu = /education|university|degree|college|bachelor|master/i.test(lowerText);
+  const hasProj = /projects|portfolio|built|applications/i.test(lowerText);
+  const hasSkills = /skills|technologies|proficiencies|stack/i.test(lowerText);
+
+  let atsScore = 0;
+  let summary = "";
+  let strengths = [];
+  let improvements = [];
+
+  if (wordCount < 30) {
+    atsScore = Math.floor(10 + wordCount * 0.5);
+    summary = "The uploaded resume contains very little text or details for a professional " + role + " role.";
+    strengths = ["Resume file processed successfully"];
+    improvements = [
+      "Add comprehensive work experience and detailed project descriptions",
+      "Include technical skills section relevant to " + role,
+      "Expand on key responsibilities and measurable outcomes"
+    ];
+  } else {
+    // Score based on word count, detected sections, and detected skills
+    let baseScore = Math.min(50, Math.floor(wordCount / 6));
+    let sectionBonus = (hasExp ? 12 : 0) + (hasEdu ? 10 : 0) + (hasProj ? 12 : 0) + (hasSkills ? 10 : 0);
+    let skillBonus = Math.min(15, detectedSkills.length * 3);
+
+    atsScore = Math.min(96, Math.max(25, baseScore + sectionBonus + skillBonus));
+
+    summary = `Parsed resume with ${wordCount} words for the target position of ${role}. ${detectedSkills.length > 0 ? 'Detected ' + detectedSkills.length + ' key technical proficiencies.' : 'Few technical keywords detected.'}`;
+
+    if (hasExp) strengths.push("Includes detailed work history section");
+    if (hasProj) strengths.push("Highlights practical project implementations");
+    if (detectedSkills.length >= 3) strengths.push("Good density of role-relevant technical keywords");
+    if (strengths.length === 0) strengths.push("Basic resume layout structure");
+
+    if (!hasExp) improvements.push("Add a dedicated Work Experience section");
+    if (!hasProj) improvements.push("Include a Projects section demonstrating real-world applications");
+    if (detectedSkills.length < 4) improvements.push("Incorporate more industry-standard technical keywords for " + role);
+    improvements.push("Add measurable achievements (e.g., 'Improved load time by 35%')");
+  }
+
+  return {
+    atsScore,
+    summary,
+    skills: detectedSkills.length > 0 ? detectedSkills : ["JavaScript", "HTML", "CSS"],
+    strengths,
+    improvements,
+  };
 }
 
 /**
@@ -368,17 +498,7 @@ ${resumeText}
 
   // 3. Fallback
   console.log("Using fallback resume analyzer (No API key configured).");
-  return {
-    atsScore: 84,
-    summary: "Resume parsed successfully. Strong technical background detected.",
-    skills: ["React", "JavaScript", "Node.js", "Express", "MongoDB", "TailwindCSS"],
-    strengths: ["Strong technical project experience", "Modern web stack keywords"],
-    improvements: [
-      "Add measurable achievements and performance metrics to work experience",
-      "Include links to live project demos or GitHub repositories",
-      "Format section headers for better ATS parsing",
-    ],
-  };
+  return generateFallbackResumeAnalysis(resumeText, role);
 }
 
 async function analyzeResumeWithAI({ resumeText, role }) {
