@@ -27,6 +27,8 @@ function Interview() {
   const [answers, setAnswers] = useState([]);
   const [isFinishing, setIsFinishing] = useState(false);
   const [isRecording, setIsRecording] = useState(false);
+  const [isSpeaking, setIsSpeaking] = useState(false);
+  const [recognitionInstance, setRecognitionInstance] = useState(null);
 
   if (!interview) {
     return (
@@ -50,8 +52,33 @@ function Interview() {
   const totalQuestions = interview.questions.length;
   const progress = ((currentQuestion + 1) / totalQuestions) * 100;
 
-  const [recognitionInstance, setRecognitionInstance] = useState(null);
+  // Text-to-Speech (Read Prompt Aloud)
+  function handleReadPrompt() {
+    if (!("speechSynthesis" in window)) {
+      alert("Text-to-speech is not supported in this browser.");
+      return;
+    }
 
+    if (isSpeaking) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+      return;
+    }
+
+    window.speechSynthesis.cancel(); // Stop any existing audio
+    const utterance = new SpeechSynthesisUtterance(question.question);
+    utterance.rate = 0.95;
+    utterance.pitch = 1.0;
+    utterance.lang = "en-US";
+
+    utterance.onstart = () => setIsSpeaking(true);
+    utterance.onend = () => setIsSpeaking(false);
+    utterance.onerror = () => setIsSpeaking(false);
+
+    window.speechSynthesis.speak(utterance);
+  }
+
+  // Voice Dictation (Speech-to-Text)
   function toggleRecording() {
     const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
 
@@ -72,18 +99,27 @@ function Interview() {
       recognition.interimResults = true;
       recognition.lang = "en-US";
 
+      const initialText = answer ? answer.trim() + " " : "";
+
       recognition.onstart = () => {
         setIsRecording(true);
       };
 
       recognition.onresult = (event) => {
-        let transcript = "";
+        let finalTranscript = "";
+        let interimTranscript = "";
+
         for (let i = event.resultIndex; i < event.results.length; i++) {
-          transcript += event.results[i][0].transcript;
+          const transcriptChunk = event.results[i][0].transcript;
+          if (event.results[i].isFinal) {
+            finalTranscript += transcriptChunk + " ";
+          } else {
+            interimTranscript += transcriptChunk;
+          }
         }
-        if (transcript.trim()) {
-          setAnswer((prev) => (prev ? prev + " " + transcript : transcript));
-        }
+
+        const combinedText = initialText + finalTranscript + interimTranscript;
+        setAnswer(combinedText);
       };
 
       recognition.onerror = (event) => {
@@ -105,6 +141,11 @@ function Interview() {
 
   function handleNext() {
     if (!answer.trim()) return;
+
+    if (window.speechSynthesis) {
+      window.speechSynthesis.cancel();
+      setIsSpeaking(false);
+    }
 
     const newAnswer = {
       questionId: question.questionId || question.id || currentQuestion + 1,
@@ -220,9 +261,17 @@ function Interview() {
                 <p className="text-[10px] text-slate-400">Technical Depth Question</p>
               </div>
             </div>
-            <button className="flex items-center gap-1.5 rounded-lg border border-white/10 bg-white/5 px-2.5 py-1 text-xs text-slate-300 hover:text-white transition-colors">
-              <Volume2 className="h-3.5 w-3.5" />
-              <span>Read Prompt</span>
+            <button
+              type="button"
+              onClick={handleReadPrompt}
+              className={`flex items-center gap-1.5 rounded-lg border px-2.5 py-1 text-xs font-medium transition-all ${
+                isSpeaking
+                  ? "border-amber-500/60 bg-amber-500/20 text-amber-300 animate-pulse"
+                  : "border-white/10 bg-white/5 text-slate-300 hover:text-white hover:border-white/20"
+              }`}
+            >
+              <Volume2 className={`h-3.5 w-3.5 ${isSpeaking ? "text-amber-400 animate-bounce" : ""}`} />
+              <span>{isSpeaking ? "Speaking..." : "Read Prompt"}</span>
             </button>
           </div>
 

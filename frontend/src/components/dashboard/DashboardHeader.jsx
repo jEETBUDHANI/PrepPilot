@@ -34,16 +34,16 @@ function DashboardHeader() {
   return (
     <header className="sticky top-0 z-30 flex items-center justify-between gap-6 border-b border-white/[0.08] bg-[#030712]/80 px-6 py-4 backdrop-blur-xl lg:px-10">
       {/* SEARCH BAR */}
-      <form onSubmit={handleSearchSubmit} className="hidden md:flex w-full max-w-sm items-center gap-2.5 rounded-xl border border-white/10 bg-slate-900/60 px-3.5 py-2 text-sm backdrop-blur-md transition-all focus-within:border-amber-500/50 focus-within:ring-2 focus-within:ring-amber-500/10">
+      <form onSubmit={handleSearchSubmit} className="flex flex-1 max-w-xs sm:max-w-sm items-center gap-2 rounded-xl border border-white/10 bg-slate-900/60 px-3 py-2 text-sm backdrop-blur-md transition-all focus-within:border-amber-500/50 focus-within:ring-2 focus-within:ring-amber-500/10">
         <Search className="h-4 w-4 text-slate-500 shrink-0" />
         <input
           type="text"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          placeholder="Search interviews, topics, history..."
+          placeholder="Search interviews, topics..."
           className="w-full bg-transparent text-slate-200 outline-none placeholder:text-slate-500 text-xs sm:text-sm"
         />
-        <button type="submit" className="hidden sm:inline-flex items-center rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] text-slate-400 font-mono hover:text-amber-400 transition-colors">
+        <button type="submit" className="flex items-center rounded border border-white/10 bg-white/5 px-2 py-0.5 text-[10px] text-slate-300 font-semibold hover:text-amber-400 hover:border-amber-500/30 transition-colors">
           Search
         </button>
       </form>

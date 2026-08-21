@@ -38,6 +38,11 @@ function InterviewHistory() {
     loadInterviews();
   }, []);
 
+  useEffect(() => {
+    const urlQuery = searchParams.get("search") || "";
+    setSearch(urlQuery);
+  }, [searchParams]);
+
   const handleSearchChange = (val) => {
     setSearch(val);
     if (val) {
