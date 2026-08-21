@@ -100,7 +100,9 @@ async function evaluateInterview(req, res) {
       answers,
     });
 
-    const score = evaluation.score || evaluation.overallScore || 80;
+    const score = typeof evaluation.score === "number"
+      ? evaluation.score
+      : (typeof evaluation.overallScore === "number" ? evaluation.overallScore : 0);
     const overallFeedback = evaluation.overallFeedback || "";
     const strengths = evaluation.strengths || [];
     const weaknesses = evaluation.weaknesses || [];
@@ -125,7 +127,7 @@ async function evaluateInterview(req, res) {
             (f) => f.questionId === ans.questionId || f.question === ans.question
           );
           if (fb) {
-            qDoc.score = fb.score || score;
+            qDoc.score = typeof fb.score === "number" ? fb.score : score;
             qDoc.feedback = fb.feedback || "";
           }
         }

@@ -1,13 +1,30 @@
 const express = require("express");
 const protect = require("../middleware/authMiddleware");
-const Interview = require("../models/Interview");
+const mongoose = require("mongoose");
 
 const router = express.Router();
 
 router.get("/", protect, async (req, res) => {
   try {
+    const isDBConnected = mongoose.connection.readyState === 1;
+    const userId = req.user?.userId;
+
+    if (!isDBConnected || !userId || !mongoose.Types.ObjectId.isValid(userId)) {
+      return res.json({
+        success: true,
+        performance: {
+          totalInterviews: 0,
+          averageScore: 0,
+          bestScore: 0,
+          totalPracticeTime: 0,
+          skills: [],
+          weeklyPerformance: [],
+        },
+      });
+    }
+
     const interviews = await Interview.find({
-      user: req.user.userId,
+      user: userId,
     }).sort({
       createdAt: -1,
     });

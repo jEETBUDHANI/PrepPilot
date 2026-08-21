@@ -7,9 +7,9 @@ function hasValidGeminiKey() {
   return key && key !== "your_api_key_here" && !/your_/i.test(key);
 }
 
-// Helper to check OpenAI Key
+// Helper to check OpenAI Key (supports both OPENAI_API_KEY and OPEN_API_KEY)
 function hasValidOpenAIKey() {
-  const key = process.env.OPENAI_API_KEY;
+  const key = process.env.OPENAI_API_KEY || process.env.OPEN_API_KEY;
   return key && key !== "your_api_key_here" && !/your_/i.test(key);
 }
 
@@ -19,8 +19,9 @@ function getGeminiClient() {
 }
 
 function getOpenAIClient() {
+  const apiKey = process.env.OPENAI_API_KEY || process.env.OPEN_API_KEY;
   if (!hasValidOpenAIKey()) return null;
-  return new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+  return new OpenAI({ apiKey });
 }
 
 // Fallback Generators for Dev mode when no API Key is configured
@@ -98,20 +99,18 @@ function generateFallbackEvaluation(role, difficulty, answers) {
     // Gibberish, single-word & low quality detection
     const isRepeatedChar = /^(.)\1+$/i.test(rawAnswer);
     const isCommonGibberish = /^(asdf|qwerty|zxcv|1234|idk|no|yes|abc|test|anything|blah|n\/a|none)$/i.test(rawAnswer);
+    const isExplicitlyWrongOrIdk = /i don'?t know|no idea|wrong answer|not sure|dont know|wrong|bad answer/i.test(rawAnswer);
     const isSingleWord = wordCount <= 1;
 
     let score = 0;
     let feedback = "";
 
-    if (!rawAnswer || isRepeatedChar || isCommonGibberish) {
-      score = Math.floor(Math.random() * 10); // 0-10
-      feedback = "No valid response provided. In a professional technical interview, you must articulate your thought process, implementation logic, and system trade-offs.";
+    if (!rawAnswer || isRepeatedChar || isCommonGibberish || isExplicitlyWrongOrIdk) {
+      score = 0; // Strictly 0 points for wrong/gibberish/blank responses!
+      feedback = "Incorrect or invalid response provided (Score: 0/100). In a technical interview, incorrect or blank answers receive 0 points. Ensure you study the underlying concepts and explain your logic.";
     } else if (isSingleWord || wordCount < 5) {
-      score = Math.floor(12 + Math.random() * 15); // 12-27
-      feedback = `Your response is far too brief (${wordCount} word${wordCount > 1 ? 's' : ''}). A ${difficulty}-level ${role} candidate must explain the core technical concepts and implementation details.`;
-    } else if (wordCount < 15) {
-      score = Math.floor(30 + Math.random() * 20); // 30-50
-      feedback = "Answer lacks technical depth. Try structuring your response with real-world examples, core principles, and edge case handling.";
+      score = 0;
+      feedback = `Your response is far too brief (${wordCount} word${wordCount > 1 ? 's' : ''}) and fails to cover technical requirements (Score: 0/100). A ${difficulty}-level ${role} candidate must explain technical concepts in detail.`;
     } else {
       // Analyze technical keyword density
       let keywordHits = 0;
@@ -119,17 +118,21 @@ function generateFallbackEvaluation(role, difficulty, answers) {
         if (lowerAnswer.includes(kw)) keywordHits++;
       });
 
-      // Base score on length + technical keywords
-      const lengthScore = Math.min(65, 40 + Math.floor(wordCount / 2));
-      const keywordScore = Math.min(30, keywordHits * 7);
-      score = Math.min(98, lengthScore + keywordScore);
-
-      if (score >= 80) {
-        feedback = "Excellent response! Clear technical terminology, good structure, and relevant architectural considerations.";
-      } else if (score >= 60) {
-        feedback = "Solid answer. Good understanding of the basic concepts. To improve, discuss quantitative metrics and edge cases.";
+      if (keywordHits === 0) {
+        score = 0;
+        feedback = "Response does not contain relevant technical concepts or keywords for a " + role + " role (Score: 0/100). Please provide specific technical details.";
       } else {
-        feedback = "Reasonable start, but needs more specific technical detail and concrete examples related to " + role + ".";
+        const keywordScore = Math.min(60, keywordHits * 15);
+        const lengthScore = Math.min(40, wordCount * 1.2);
+        score = Math.min(95, Math.round(keywordScore + lengthScore));
+
+        if (score >= 80) {
+          feedback = "Excellent response! Clear technical terminology, good structure, and relevant architectural considerations.";
+        } else if (score >= 60) {
+          feedback = "Solid answer. Good understanding of the basic concepts. To improve, discuss quantitative metrics and edge cases.";
+        } else {
+          feedback = "Reasonable start, but needs more specific technical detail and concrete examples related to " + role + ".";
+        }
       }
     }
 
@@ -211,7 +214,7 @@ Return JSON in this format:
     try {
       console.log("Generating interview questions using Google Gemini AI...");
       const response = await gemini.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-1.5-flash",
         contents: prompt,
         config: {
           responseMimeType: "application/json",
@@ -268,8 +271,8 @@ async function evaluateInterviewAnswers({ role, difficulty = "Medium", answers }
   const prompt = `You are an expert, highly strict technical interviewer evaluating a candidate's interview session for a ${role} position (${difficulty} level).
 
 CRITICAL EVALUATION DIRECTIVES:
-1. If an answer is blank, gibberish (e.g. "asdf", "qwerty"), off-topic, or single-word ("no", "yes", "anything"), YOU MUST AWARD 0 TO 15 POINTS out of 100 for that question and mark it as a severe flaw in feedback.
-2. If an answer is extremely brief (< 15 words) or superficial, cap the score at 20 TO 45 points out of 100.
+1. STRICT ACCURACY: If an answer is factually incorrect, wrong, off-topic, blank, gibberish (e.g. "asdf", "qwerty"), or single-word non-answers ("no", "yes", "idk"), YOU MUST AWARD EXACTLY 0 POINTS out of 100 for that question. Do NOT award any participation points for wrong or nonsensical answers.
+2. If an answer is extremely brief (< 15 words) or superficial, cap the score at 10 to 30 points out of 100 ONLY if it is directionally correct. If it is factually wrong, award 0 points.
 3. Award high scores (80-100) ONLY for well-explained, technically accurate responses containing proper architectural concepts, syntax, or trade-offs.
 4. Calculate overallScore as the exact mathematical average of all question scores.
 
@@ -298,7 +301,7 @@ Return ONLY valid JSON in this exact structure:
     try {
       console.log("Evaluating interview answers using Google Gemini AI...");
       const response = await gemini.models.generateContent({
-        model: "gemini-2.5-flash",
+        model: "gemini-1.5-flash",
         contents: prompt,
         config: {
           responseMimeType: "application/json",
@@ -307,9 +310,11 @@ Return ONLY valid JSON in this exact structure:
       });
 
       const parsed = JSON.parse(response.text);
+      const computedScore = typeof parsed.score === "number" ? parsed.score : (typeof parsed.overallScore === "number" ? parsed.overallScore : 0);
       return {
         ...parsed,
-        overallScore: parsed.score || parsed.overallScore || 80,
+        score: computedScore,
+        overallScore: computedScore,
       };
     } catch (error) {
       console.error("Gemini Evaluation Error:", error.message);
@@ -331,9 +336,11 @@ Return ONLY valid JSON in this exact structure:
       });
 
       const parsed = JSON.parse(completion.choices[0].message.content);
+      const computedScore = typeof parsed.score === "number" ? parsed.score : (typeof parsed.overallScore === "number" ? parsed.overallScore : 0);
       return {
         ...parsed,
-        overallScore: parsed.score || parsed.overallScore || 80,
+        score: computedScore,
+        overallScore: computedScore,
       };
     } catch (error) {
       console.error("OpenAI Evaluation Error:", error.message);

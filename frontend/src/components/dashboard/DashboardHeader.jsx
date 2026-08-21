@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { Bell, Search, ChevronDown, Sparkles } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function DashboardHeader() {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
