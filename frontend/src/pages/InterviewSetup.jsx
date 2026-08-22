@@ -150,7 +150,7 @@ function InterviewSetup() {
           {/* DIFFICULTY SELECTOR */}
           <div className="space-y-4">
             <div className="flex items-center gap-2.5">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-cyan-600/20 text-cyan-400 border border-cyan-500/20">
+              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-orange-600/20 text-amber-400 border border-orange-500/20">
                 <Gauge className="h-4 w-4" />
               </div>
               <h2 className="text-base font-bold text-white">2. Choose Challenge Difficulty</h2>

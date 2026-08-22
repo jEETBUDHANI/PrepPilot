@@ -142,7 +142,7 @@ function Settings() {
         {/* PASSWORD SECTION */}
         <Card variant="default" className="p-6">
           <div className="flex items-center gap-3 border-b border-white/10 pb-4">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-600/15 text-cyan-400 border border-cyan-500/20">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-600/15 text-amber-400 border border-orange-500/20">
               <Lock className="h-5 w-5" />
             </div>
             <div>

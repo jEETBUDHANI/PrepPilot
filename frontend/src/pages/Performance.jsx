@@ -140,7 +140,7 @@ function Performance() {
           <Card variant="default" className="p-6">
             <div className="flex items-center justify-between">
               <span className="text-xs font-semibold uppercase tracking-wider text-slate-400">Practice Time</span>
-              <Clock className="h-4 w-4 text-cyan-400" />
+              <Clock className="h-4 w-4 text-amber-400" />
             </div>
             <p className="mt-3 text-3xl font-extrabold text-white">{totalPracticeTime} min</p>
             <p className="mt-1 text-xs text-emerald-400 font-medium">Total minutes practiced</p>

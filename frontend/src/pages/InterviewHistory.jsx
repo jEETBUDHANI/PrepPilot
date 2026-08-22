@@ -142,7 +142,7 @@ function InterviewHistory() {
           </Card>
           <Card variant="default" className="p-5">
             <p className="text-xs font-semibold uppercase tracking-wider text-slate-400">Database Status</p>
-            <p className="mt-2 text-3xl font-extrabold text-cyan-400">Live DB</p>
+            <p className="mt-2 text-3xl font-extrabold text-amber-400">Live DB</p>
           </Card>
         </div>
 

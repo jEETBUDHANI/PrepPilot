@@ -68,7 +68,7 @@ function Home() {
   ];
 
   return (
-    <div className="min-h-screen bg-[#F8FAFC] text-[#0F172A] selection:bg-sky-200/80">
+    <div className="min-h-screen bg-[#030712] text-[#f8fafc] selection:bg-orange-600/50">
       <Navbar />
 
       {/* HERO SECTION */}
@@ -85,12 +85,12 @@ function Home() {
               </Badge>
             </div>
 
-            <h1 className="mt-8 text-4xl font-extrabold tracking-tight text-[#0F172A] sm:text-6xl lg:text-7xl leading-[1.05]">
+            <h1 className="mt-8 text-4xl font-extrabold tracking-tight text-white sm:text-6xl lg:text-7xl leading-[1.05]">
               Turn interview nerves into <br className="hidden sm:inline" />
               <span className="gradient-text-ember">job-ready confidence.</span>
             </h1>
 
-            <p className="mx-auto mt-7 max-w-2xl text-base sm:text-lg leading-relaxed text-[#334155]">
+            <p className="mx-auto mt-7 max-w-2xl text-base sm:text-lg leading-relaxed text-slate-300">
               Practice realistic mock interviews with adaptive AI, get instant actionable feedback, optimize your resume for ATS screening, and land the role you want faster.
             </p>
 
@@ -110,34 +110,34 @@ function Home() {
               </a>
             </div>
 
-            <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-[#64748B]">
-              <span className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-2 shadow-sm">
-                <ShieldCheck className="h-4 w-4 text-emerald-500" /> No credit card required
+            <div className="mt-8 flex flex-wrap items-center justify-center gap-6 text-xs text-slate-300">
+              <span className="flex items-center gap-1.5 rounded-full border border-orange-700/50 bg-slate-900/70 px-3 py-2 shadow-sm backdrop-blur">
+                <ShieldCheck className="h-4 w-4 text-emerald-400" /> No credit card required
               </span>
-              <span className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-2 shadow-sm">
-                <Zap className="h-4 w-4 text-[#F97316]" /> Instant AI Feedback
+              <span className="flex items-center gap-1.5 rounded-full border border-orange-700/50 bg-slate-900/70 px-3 py-2 shadow-sm backdrop-blur">
+                <Zap className="h-4 w-4 text-orange-400" /> Instant AI Feedback
               </span>
-              <span className="flex items-center gap-1.5 rounded-full border border-slate-200 bg-white px-3 py-2 shadow-sm">
-                <Star className="h-4 w-4 text-[#F97316]" /> Trusted by 10,000+ candidates
+              <span className="flex items-center gap-1.5 rounded-full border border-orange-700/50 bg-slate-900/70 px-3 py-2 shadow-sm backdrop-blur">
+                <Star className="h-4 w-4 text-orange-400" /> Trusted by 10,000+ candidates
               </span>
             </div>
           </div>
 
           <div className="relative mx-auto mt-16 max-w-5xl">
-            <div className="rounded-[28px] border border-slate-200 bg-white p-1.5 shadow-[0_30px_80px_rgba(2,132,199,0.10)]">
-              <div className="overflow-hidden rounded-[22px] border border-slate-200 bg-[#F8FAFC] backdrop-blur-2xl">
-                <div className="flex h-12 items-center justify-between border-b border-slate-200 bg-white px-5">
+            <div className="rounded-[28px] border border-slate-800 bg-slate-900 p-1.5 shadow-[0_30px_80px_rgba(249,115,22,0.15)]">
+              <div className="overflow-hidden rounded-[22px] border border-slate-800 bg-slate-950 backdrop-blur-2xl">
+                <div className="flex h-12 items-center justify-between border-b border-slate-800 bg-slate-900 px-5">
                   <div className="flex items-center gap-2">
                     <span className="h-3 w-3 rounded-full bg-rose-400" />
                     <span className="h-3 w-3 rounded-full bg-orange-400" />
                     <span className="h-3 w-3 rounded-full bg-emerald-400" />
-                    <span className="ml-3 text-xs font-mono text-slate-500">hireflux.ai/app/workspace</span>
+                    <span className="ml-3 text-xs font-mono text-slate-400">hireflux.ai/app/workspace</span>
                   </div>
                   <div className="flex gap-2">
                     <button
                       onClick={() => setActiveTab("interview")}
                       className={`px-3 py-1 text-xs rounded-lg transition-colors ${
-                        activeTab === "interview" ? "bg-sky-100 text-sky-700 font-semibold" : "text-slate-500 hover:text-slate-700"
+                        activeTab === "interview" ? "bg-orange-950 text-amber-400 font-semibold" : "text-slate-400 hover:text-slate-300"
                       }`}
                     >
                       AI Interview Session
@@ -145,7 +145,7 @@ function Home() {
                     <button
                       onClick={() => setActiveTab("resume")}
                       className={`px-3 py-1 text-xs rounded-lg transition-colors ${
-                        activeTab === "resume" ? "bg-orange-100 text-orange-700 font-semibold" : "text-slate-500 hover:text-slate-700"
+                        activeTab === "resume" ? "bg-orange-100 text-orange-700 font-semibold" : "text-slate-400 hover:text-slate-300"
                       }`}
                     >
                       ATS Resume Score
@@ -156,22 +156,22 @@ function Home() {
                 <div className="p-6 lg:p-8 min-h-[380px]">
                   {activeTab === "interview" ? (
                     <div className="space-y-6">
-                      <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+                      <div className="flex items-center justify-between border-b border-slate-800 pb-4">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-sky-100 text-[#0284C7]">
+                          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-950 text-orange-400">
                             <Brain className="h-5 w-5" />
                           </div>
                           <div>
-                            <h4 className="font-semibold text-[#0F172A] text-sm sm:text-base">Frontend Developer (React & TypeScript)</h4>
-                            <p className="text-xs text-slate-500">Question 3 of 5 • Technical Depth: Hard</p>
+                            <h4 className="font-semibold text-white text-sm sm:text-base">Frontend Developer (React & TypeScript)</h4>
+                            <p className="text-xs text-slate-400">Question 3 of 5 • Technical Depth: Hard</p>
                           </div>
                         </div>
                         <Badge variant="emerald" dot>Live Session Active</Badge>
                       </div>
 
-                      <div className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-[#0284C7] mb-2">AI Interviewer Prompt</p>
-                        <p className="text-sm text-[#334155] leading-relaxed font-medium">
+                      <div className="rounded-2xl border border-slate-800 bg-slate-900 p-5 shadow-sm">
+                        <p className="text-xs font-semibold uppercase tracking-wider text-amber-400 mb-2">AI Interviewer Prompt</p>
+                        <p className="text-sm text-slate-300 leading-relaxed font-medium">
                           "Explain how React 19 Concurrent rendering optimizes state updates and how you would prevent unnecessary re-renders in a complex data table component."
                         </p>
                       </div>
@@ -184,37 +184,37 @@ function Home() {
                           </div>
                           <p className="text-xs text-slate-600">Strong technical terminology and practical code architecture explanation.</p>
                         </div>
-                        <div className="rounded-2xl border border-sky-200 bg-sky-50 p-4">
-                          <div className="flex items-center justify-between text-xs font-semibold text-sky-700 mb-1">
+                        <div className="rounded-2xl border border-orange-700 bg-orange-950 p-4">
+                          <div className="flex items-center justify-between text-xs font-semibold text-amber-300 mb-1">
                             <span>Communication Tone</span>
                             <span>Confident</span>
                           </div>
-                          <p className="text-xs text-slate-600">Pacing is structured with clear STAR method responses.</p>
+                          <p className="text-xs text-slate-300">Pacing is structured with clear STAR method responses.</p>
                         </div>
                       </div>
                     </div>
                   ) : (
                     <div className="space-y-6">
-                      <div className="flex items-center justify-between border-b border-slate-200 pb-4">
+                      <div className="flex items-center justify-between border-b border-slate-800 pb-4">
                         <div>
-                          <h4 className="font-semibold text-[#0F172A]">Senior Software Engineer Resume</h4>
-                          <p className="text-xs text-slate-500">ATS Scan Result • Updated Today</p>
+                          <h4 className="font-semibold text-white">Senior Software Engineer Resume</h4>
+                          <p className="text-xs text-slate-400">ATS Scan Result • Updated Today</p>
                         </div>
                         <Badge variant="glow">Overall Score: 88/100</Badge>
                       </div>
 
                       <div className="grid gap-4 sm:grid-cols-3">
-                        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                          <p className="text-xs text-slate-500">ATS Compatibility</p>
-                          <p className="text-2xl font-bold text-emerald-600 mt-1">94%</p>
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4 shadow-sm">
+                          <p className="text-xs text-slate-400">ATS Compatibility</p>
+                          <p className="text-2xl font-bold text-emerald-400 mt-1">94%</p>
                         </div>
-                        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                          <p className="text-xs text-slate-500">Detected Keywords</p>
-                          <p className="text-2xl font-bold text-[#F97316] mt-1">18 Skills</p>
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4 shadow-sm">
+                          <p className="text-xs text-slate-400">Detected Keywords</p>
+                          <p className="text-2xl font-bold text-amber-400 mt-1">18 Skills</p>
                         </div>
-                        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm">
-                          <p className="text-xs text-slate-500">Format Structure</p>
-                          <p className="text-2xl font-bold text-[#0284C7] mt-1">Optimal</p>
+                        <div className="rounded-2xl border border-slate-800 bg-slate-900 p-4 shadow-sm">
+                          <p className="text-xs text-slate-400">Format Structure</p>
+                          <p className="text-2xl font-bold text-orange-400 mt-1">Optimal</p>
                         </div>
                       </div>
                     </div>
@@ -226,20 +226,20 @@ function Home() {
         </div>
       </section>
 
-      <section className="border-y border-slate-200 bg-white/70 py-10">
+      <section className="border-y border-slate-800 bg-slate-950/50 py-10">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 text-center">
-          <p className="text-xs font-semibold uppercase tracking-[3px] text-slate-500 mb-6">
+          <p className="text-xs font-semibold uppercase tracking-[3px] text-slate-400 mb-6">
             Empowering candidates preparing for top tech roles
           </p>
-          <div className="flex flex-wrap items-center justify-center gap-8 text-[#334155] text-sm font-medium">
-            <span className="flex items-center gap-2 border border-slate-200 rounded-full px-4 py-2 bg-white shadow-sm">
-              <ShieldCheck className="h-4 w-4 text-emerald-500" /> 100% Private & Confidential
+          <div className="flex flex-wrap items-center justify-center gap-8 text-slate-300 text-sm font-medium">
+            <span className="flex items-center gap-2 border border-orange-700/40 rounded-full px-4 py-2 bg-slate-900/60 shadow-sm backdrop-blur">
+              <ShieldCheck className="h-4 w-4 text-emerald-400" /> 100% Private & Confidential
             </span>
-            <span className="flex items-center gap-2 border border-slate-200 rounded-full px-4 py-2 bg-white shadow-sm">
-              <Brain className="h-4 w-4 text-[#0284C7]" /> Powered by Advanced LLMs
+            <span className="flex items-center gap-2 border border-orange-700/40 rounded-full px-4 py-2 bg-slate-900/60 shadow-sm backdrop-blur">
+              <Brain className="h-4 w-4 text-orange-400" /> Powered by Advanced LLMs
             </span>
-            <span className="flex items-center gap-2 border border-slate-200 rounded-full px-4 py-2 bg-white shadow-sm">
-              <CheckCircle2 className="h-4 w-4 text-emerald-500" /> 24/7 Practice Access
+            <span className="flex items-center gap-2 border border-orange-700/40 rounded-full px-4 py-2 bg-slate-900/60 shadow-sm backdrop-blur">
+              <CheckCircle2 className="h-4 w-4 text-emerald-400" /> 24/7 Practice Access
             </span>
           </div>
         </div>
@@ -264,7 +264,7 @@ function Home() {
                 <Card key={item.title} variant="interactive" className="p-6 flex flex-col justify-between">
                   <div>
                     <div className="flex items-center justify-between">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-sky-100 text-[#0284C7] border border-sky-200">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-orange-950 text-orange-400 border border-orange-700">
                         <Icon className="h-6 w-6" />
                       </div>
                       <Badge variant="neutral" size="sm">{item.tag}</Badge>
@@ -285,7 +285,7 @@ function Home() {
         </div>
       </section>
 
-      <section id="how-it-works" className="border-y border-slate-200 bg-sky-50/50 py-24">
+      <section id="how-it-works" className="border-y border-slate-800 bg-slate-950/50 py-24">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
           <div className="text-center max-w-2xl mx-auto">
             <Badge variant="cyan" size="md">Simple Workflow</Badge>
@@ -400,7 +400,7 @@ function Home() {
       </section>
 
       <section className="px-6 pb-24 lg:px-8">
-        <div className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl border border-sky-200 bg-gradient-to-r from-sky-100 via-white to-orange-100 px-6 py-16 text-center shadow-[0_25px_65px_rgba(2,132,199,0.10)] sm:px-12">
+        <div className="relative mx-auto max-w-5xl overflow-hidden rounded-3xl border border-orange-700 bg-gradient-to-r from-orange-950 via-slate-900 to-orange-900 px-6 py-16 text-center shadow-[0_25px_65px_rgba(249,115,22,0.15)] sm:px-12">
           <div className="glow-orb-amber -top-20 left-1/2 -translate-x-1/2 h-64 w-64 opacity-60" />
           <Sparkles className="mx-auto h-8 w-8 text-[#F97316] mb-4 animate-pulse" />
 

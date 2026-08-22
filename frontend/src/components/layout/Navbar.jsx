@@ -13,21 +13,21 @@ function Navbar() {
   ];
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200 bg-white/80 backdrop-blur-xl transition-all">
+    <header className="sticky top-0 z-50 w-full border-b border-slate-800 bg-slate-950/80 backdrop-blur-xl transition-all">
       <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-6 lg:px-8">
         {/* LOGO */}
         <Link to="/" className="flex items-center gap-3 group">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#0284C7] via-sky-500 to-[#F97316] font-bold text-white shadow-lg shadow-sky-200 transition-transform duration-300 group-hover:scale-105">
+          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-[#f97316] via-orange-500 to-[#fbbf24] font-bold text-white shadow-lg shadow-orange-600 transition-transform duration-300 group-hover:scale-105">
             <Sparkles className="h-5 w-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <span className="font-bold tracking-tight text-[#0F172A] text-lg">HireFlux</span>
-              <span className="rounded-full bg-sky-100 px-2 py-0.5 text-[10px] font-semibold text-sky-700 border border-sky-200">
+              <span className="font-bold tracking-tight text-white text-lg">HireFlux</span>
+              <span className="rounded-full bg-orange-950 px-2 py-0.5 text-[10px] font-semibold text-amber-400 border border-orange-700">
                 PRO
               </span>
             </div>
-            <p className="text-[10px] uppercase tracking-[2px] text-slate-500 font-medium">
+            <p className="text-[10px] uppercase tracking-[2px] text-slate-400 font-medium">
               AI Interview SaaS
             </p>
           </div>
@@ -39,7 +39,7 @@ function Navbar() {
             <a
               key={link.name}
               href={link.href}
-              className="text-sm font-medium text-slate-600 transition-colors hover:text-[#0284C7]"
+              className="text-sm font-medium text-slate-300 transition-colors hover:text-orange-400"
             >
               {link.name}
             </a>

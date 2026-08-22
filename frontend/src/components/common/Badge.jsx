@@ -15,23 +15,23 @@ function Badge({
   };
 
   const variants = {
-    purple: "bg-sky-100 border-sky-200 text-sky-700",
-    cyan: "bg-sky-100 border-sky-200 text-sky-700",
+    purple: "bg-orange-950 border-orange-800 text-amber-400",
+    cyan: "bg-orange-950 border-orange-800 text-amber-400",
     emerald: "bg-emerald-100 border-emerald-200 text-emerald-700",
     amber: "bg-orange-100 border-orange-200 text-orange-700",
     rose: "bg-rose-100 border-rose-200 text-rose-700",
     neutral: "bg-slate-100 border-slate-200 text-slate-600",
-    glow: "bg-gradient-to-r from-sky-100 via-white to-orange-100 border-sky-200 text-sky-700 shadow-[0_0_15px_rgba(2,132,199,0.12)]",
+    glow: "bg-gradient-to-r from-orange-950 via-orange-900 to-orange-800 border-orange-700 text-amber-400 shadow-[0_0_15px_rgba(249,115,22,0.25)]",
   };
 
   const dotColors = {
-    purple: "bg-sky-500",
-    cyan: "bg-sky-500",
+    purple: "bg-amber-500",
+    cyan: "bg-amber-500",
     emerald: "bg-emerald-500",
     amber: "bg-orange-500",
     rose: "bg-rose-500",
     neutral: "bg-slate-500",
-    glow: "bg-sky-500",
+    glow: "bg-amber-500",
   };
 
   return (

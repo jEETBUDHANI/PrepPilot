@@ -232,7 +232,7 @@ function Dashboard() {
                 className="p-5 flex items-center justify-between group"
               >
                 <div className="flex items-center gap-3.5">
-                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-cyan-600/15 text-cyan-400 border border-cyan-500/20">
+                  <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-orange-600/15 text-amber-400 border border-orange-500/20">
                     <FileText className="h-5 w-5" />
                   </div>
                   <div>
@@ -240,7 +240,7 @@ function Dashboard() {
                     <p className="text-xs text-slate-400">Check ATS readiness score</p>
                   </div>
                 </div>
-                <ArrowRight className="h-4 w-4 text-slate-500 transition-transform group-hover:translate-x-1 group-hover:text-cyan-400" />
+                <ArrowRight className="h-4 w-4 text-slate-500 transition-transform group-hover:translate-x-1 group-hover:text-amber-400" />
               </Card>
 
               <Card

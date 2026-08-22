@@ -8,11 +8,11 @@ function Card({
   const base = "rounded-2xl border backdrop-blur-xl transition-all duration-300";
 
   const variants = {
-    default: "bg-white border-[#E2E8F0] text-[#0F172A] shadow-xl shadow-sky-100/60",
-    interactive: "bg-white border-[#E2E8F0] text-[#0F172A] shadow-xl shadow-sky-100/60 hover:border-sky-300 hover:-translate-y-1 hover:shadow-sky-200/80 cursor-pointer",
-    gradient: "bg-gradient-to-br from-sky-50 via-white to-orange-50 border-[#E2E8F0] text-[#0F172A] shadow-2xl",
-    glow: "bg-white border-sky-200 text-[#0F172A] shadow-[0_0_30px_rgba(2,132,199,0.08)]",
-    solid: "bg-white border-[#E2E8F0] text-[#0F172A]",
+    default: "bg-slate-900 border-slate-800 text-white shadow-xl shadow-black/40",
+    interactive: "bg-slate-900 border-slate-800 text-white shadow-xl shadow-black/40 hover:border-orange-500/40 hover:-translate-y-1 hover:shadow-orange-500/20 cursor-pointer",
+    gradient: "bg-gradient-to-br from-orange-950 via-slate-900 to-orange-900 border-slate-800 text-white shadow-2xl",
+    glow: "bg-slate-900 border-orange-700/50 text-white shadow-[0_0_30px_rgba(249,115,22,0.15)]",
+    solid: "bg-slate-900 border-slate-800 text-white",
   };
 
   return (

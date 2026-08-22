@@ -10,7 +10,7 @@ function Button({
   disabled,
   isLoading = false,
 }) {
-  const baseStyles = "inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500/40 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]";
+  const baseStyles = "inline-flex items-center justify-center font-medium rounded-xl transition-all duration-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-orange-500/40 disabled:pointer-events-none disabled:opacity-50 active:scale-[0.98]";
 
   const sizes = {
     sm: "px-3.5 py-2 text-xs gap-1.5",
@@ -20,15 +20,15 @@ function Button({
 
   const variants = {
     primary:
-      "bg-gradient-to-r from-[#0284C7] to-[#0EA5E9] text-white shadow-lg shadow-sky-500/25 hover:shadow-sky-500/35 hover:from-[#0369A1] hover:to-[#0284C7] border border-sky-400/20",
+      "bg-gradient-to-r from-[#f97316] to-[#fb923c] text-white shadow-lg shadow-orange-500/25 hover:shadow-orange-500/35 hover:from-[#ea580c] hover:to-[#f97316] border border-orange-400/20",
     glow:
-      "bg-gradient-to-r from-[#0284C7] via-[#F97316] to-[#F59E0B] text-white shadow-[0_0_25px_rgba(2,132,199,0.25)] hover:shadow-[0_0_35px_rgba(249,115,22,0.3)] hover:brightness-105 border border-white/20",
+      "bg-gradient-to-r from-[#f97316] via-[#fb923c] to-[#fbbf24] text-white shadow-[0_0_25px_rgba(249,115,22,0.25)] hover:shadow-[0_0_35px_rgba(249,115,22,0.3)] hover:brightness-105 border border-white/20",
     secondary:
-      "bg-white text-[#0F172A] hover:bg-sky-50 border border-[#E2E8F0] backdrop-blur-md shadow-sm",
+      "bg-slate-900 text-white hover:bg-slate-800 border border-slate-700 backdrop-blur-md shadow-sm",
     outline:
-      "border border-[#E2E8F0] bg-white text-[#0F172A] hover:border-sky-300 hover:bg-sky-50",
+      "border border-slate-700 bg-slate-950 text-white hover:border-orange-500/50 hover:bg-slate-900",
     ghost:
-      "bg-transparent text-[#334155] hover:text-[#0284C7] hover:bg-sky-50",
+      "bg-transparent text-slate-300 hover:text-orange-400 hover:bg-slate-900/50",
     destructive:
       "bg-gradient-to-r from-rose-600 to-red-600 text-white shadow-lg shadow-rose-600/25 hover:from-rose-500 hover:to-red-500 border border-rose-400/20",
   };
